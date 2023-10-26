@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+@import '_reset.scss';
+@import '_vars.scss';
+
+html, body {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 50px);
+  background-color: $white;
+  font-family: $font-body;
+  font-weight: $light;
+  font-size: 14px;
+  text-align: left;
+  color: $black;
+}
+
+#root {
+  width: 100%;
+
+  &.is-fixed {
+    position: fixed;
+    overflow: hidden;
+  }
+}
+
+.frame {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 30px;
+  width: 100%;
+  max-width: $bp-large;
+  margin: 0 auto;
+
+  @media screen and (max-width: $bp-mobile-sm) {
+    padding: 0 10px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-header;
+  font-weight: $reg;
+  text-transform: uppercase;
+}
+
+h1 {
+  color: $white;
+  cursor: pointer;
+  font-size: 18px;
+
+  span {
+    color: $l-gray;
+  }
+}
+
+h2 {
+  font-size: 50px;
+  line-height: 50px;
+  margin-top: -5px;
+
+  span {
+    color: $gray;
+    font-weight: $light;
+  }
+
+  @media screen and (max-width: $bp-mobile) {
+    font-size: 35px;
+    line-height: 35px;
+    margin-top: -2px;
+  }
+
+  @media screen and (max-width: $bp-mobile-sm) {
+    font-size: 25px;
+    line-height: 25px;
+    margin-top: -2px;
+  }
+}
+
+h3 {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+h4 {
+  font-size: 20px;
+  line-height: 24px;
+  // white-space: nowrap;
+
+  span {
+    color: $gray;
+    font-weight: $light;
+  }
+
+  &.letter {
+    margin-bottom: 10px;
+  }
+}
+
+h5 {
+  font-size: 18px;
+  text-transform: none;
+}
+
+h6 {
+
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+  background-color: $black;
+  z-index: 10;
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 20px;
+  }
+
+  a {
+    color: $white;
+  }
+}
+
+a {
+  text-decoration: underline;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+footer {
+  // padding-top: 100px;
+}
+
+button {
+  @extend .no-select;
+  position: relative;
+  color: $black;
+  font-size: 16px;
+  text-align: center;
+  min-height: 38px;
+  padding: 6px 14px;
+  margin-right: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+p, pre, code {
+  margin: 10px 0;
+  font-family: $font-body;
+  font-weight: $light;
+  font-size: 16px;
+}
+
+strong {
+  font-weight: $reg;
+}
+
+audio {
+  width: 100%;
+}
+
+p, li, a, pre, code {
+  line-height: 24px;
+}
+
+#container { 
+  margin-top: 50px;
+}
+
+.row {
+  margin: 30px 0;
+}
+
+/* ----- HOME BROWSE VIEW ----- */
+
+#page-home {
+  height: calc(100vh - 50px);
+  overflow: hidden;
+}
+
+#side-panel {
+  position: absolute;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: $white;
+  z-index: 10;
+  transition: left 150ms ease-out;
+
+  &.is-open {
+    left: 0;
+  }
+}
+
+#side-toggle {
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 20px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $l-gray;
+  cursor: pointer;
+}
+
+#main-panel {
+  height: 100%;
+  overflow-y: auto;
+  padding-left: 20px;
+  transition: margin-left 150ms ease-out;
+
+  &.is-open {
+    margin-left: 300px;
+  }
+}
+
+#artist-list {
+  box-sizing: border-box;
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+
+  li:hover {
+    cursor: pointer;
+    background-color: $l-gray;
+  }
+
+  h4 {
+    margin-top: 20px;
+    background-color: $black;
+    color: $white;
+  }
+}
+
+.item {
+  border-bottom: 1px solid $l-gray;
+  padding: 5px 5px 5px 35px;
+  background-repeat: no-repeat;
+  background-size: 25px;
+  background-position: 2px center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $l-gray;
+  }
+
+  &.folder {
+    background-image: url(/img/folder.svg);
+  }
+
+  &.mp3 {
+    background-image: url(/img/mp3.svg);
+  }
+}
+
+// meta album cover
+.cover {
+  width: 100%;
+  max-width: 300px;
+}
+
+#more-from {
+  margin-top: 60px;
+}
+
+.album {
+  width: 160px;
+  font-size: 12px;
+  text-align: center;
+
+  img {
+    width: 100%;
+  }
+}
+
+/* ----- PLAYER PANEL ----- */
+
+#player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background-color: $l-gray;
+  }
+}
