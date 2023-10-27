@@ -1,9 +1,23 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppContext } from '../contexts/application';
+
 export default function Header() {
+	const { appState, appAction } = useAppContext();
+
+	const toggleMenu = () => {
+		appAction.toggleMenu();
+	}
+
 	return (
 		<header>
-			<nav>
-				<h1>Music Server</h1>
-			</nav>
+			<div className={'btn-menu'+ (appState.menuOpen ? ' is-active' : '')} onClick={toggleMenu}>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<h1><Link to="/">Music Server</Link></h1>
 		</header>
 	);
 }

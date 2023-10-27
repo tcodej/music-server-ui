@@ -1,4 +1,6 @@
 export default function Breadcrumbs({ path }) {
-	return (path.length > 1) &&
-		<h3>{path.split('/').join(' / ')}</h3>
+	const parts = path.split('/');
+
+	return (parts.length > 1) &&
+		<h3>{parts.join(' / ')}</h3>
 }

@@ -3,6 +3,7 @@ import {
 	Routes,
 	Route
 } from 'react-router-dom';
+import { ApplicationProvider } from './contexts/application';
 import Header from './components/header';
 import Footer from './components/footer';
 import Home from './views/home';
@@ -11,16 +12,18 @@ import './styles/main.scss';
 
 export default function App() {
 	return (
-		<BrowserRouter basename="/">
-			<Header />
-			<div id="container">
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/*" element={<Home />} />
-					<Route path="*" element={<Error404 />} />
-				</Routes>
-			</div>
-			<Footer />
-		</BrowserRouter>
+		<ApplicationProvider>
+			<BrowserRouter basename="/">
+				<Header />
+				<div id="container">
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/*" element={<Home />} />
+						<Route path="*" element={<Error404 />} />
+					</Routes>
+				</div>
+				<Footer />
+			</BrowserRouter>
+		</ApplicationProvider>
 	)
 }
