@@ -322,7 +322,12 @@ audio {
   overflow: hidden;
 }
 
+#music-browser {
+  height: 100%;
+}
+
 #side-panel {
+  @extend .no-select;
   position: absolute;
   top: 0;
   left: -300px;
@@ -333,8 +338,12 @@ audio {
   transition: left 150ms ease-out;
 
   &.is-open {
+    @media screen and (max-width: $bp-mobile-sm) {
+      width: 100%;
+    }
     left: 0;
   }
+
 }
 
 #side-toggle {
@@ -362,7 +371,7 @@ audio {
     margin-left: 300px;
   }
 
-  @media screen and (max-width: $bp-mobile) {
+  @media screen and (max-width: $bp-mobile-sm) {
     &.is-open {
       margin-left: 0;
     }
@@ -416,6 +425,10 @@ audio {
   background-size: 25px;
   background-position: 2px center;
   cursor: pointer;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     background-color: $l-gray;
@@ -456,9 +469,9 @@ audio {
 
 /* ----- PLAYER PANEL ----- */
 
-#player {
-  position: absolute;
-  top: 0;
+#player-panel {
+  position: fixed;
+  top: 50px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -474,5 +487,11 @@ audio {
     width: 20px;
     height: 20px;
     background-color: $l-gray;
+  }
+
+  &.min {
+    top: auto;
+    bottom: 0;
+    height: 40px;  
   }
 }

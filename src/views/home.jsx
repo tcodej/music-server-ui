@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
+import { useSwipeable } from 'react-swipeable';
 
 import { browse, getMeta } from '../utils/api';
 import { alphaGroup } from '../utils';
@@ -13,7 +14,7 @@ import Passcode from '../components/passcode';
 
 export default function Browser() {
 	const params = useParams();
-	const { appState, appAction } = useAppContext();
+	const { appState, appAction, updateAppState } = useAppContext();
 
 	const [authenticated, setAuthenticated] = useState(false);
 	const [loaded, setLoaded] = useState(false);
@@ -58,7 +59,7 @@ export default function Browser() {
 
 	const loadArtist = (path) => {
 		setMeta();
-		setPlayerMeta();
+		// setPlayerMeta();
 		setPrevList();
 		setList();
 
@@ -87,8 +88,8 @@ export default function Browser() {
 		});
 	}
 
-	const sideToggle = () => {
-		appAction.toggleMenu();
+	const sideToggle = (bool) => {
+		appAction.toggleMenu(bool);
 	}
 
 	const playAudio = (path) => {
@@ -114,11 +115,25 @@ export default function Browser() {
 
 	const closePlayer = () => {
 		setPlayerMeta();
+		updateAppState({ playerState: null });
 	}
 
 	const unlock = () => {
 		setAuthenticated(true);
 	}
+
+	const swipeHandlers = useSwipeable({
+		delta: 100,
+		swipeDuration: 500,
+
+		onSwipedLeft: (e) => {
+			sideToggle(false);
+		},
+
+		onSwipedRight: (e) => {
+			sideToggle(true);
+		}
+	});
 
 	return (
 		<div id="page-home">
@@ -130,76 +145,79 @@ export default function Browser() {
 		:
 
 			<Fragment>
-				<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
+				<div id="music-browser" {...swipeHandlers}>
+					<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
 
-					{ artistGroups &&
-						<Fragment>
-							<div id="artist-filter">
-								<input type="text" value={filter} onChange={doFilter} placeholder="Find in Artists" />
+						{ artistGroups &&
+							<Fragment>
+								<div id="artist-filter">
+									<input type="text" value={filter} onChange={doFilter} placeholder="Find in Artists" />
+								</div>
+								<div id="artist-list">
+									{
+										artistGroups.map((group) => {
+											return (
+												<div className="artist-group" key={group.letter}>
+													<h4>{group.letter}</h4>
+													<ul>
+														{
+															group.items.map((item) => {
+																return <li key={item} onClick={() => { loadArtist(item) }}>{item}</li>
+															})
+														}
+													</ul>
+												</div>
+											)
+										})
+									}
+								</div>
+							</Fragment>
+						}
+
+					</div>
+
+					<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
+						{ (list && list.path) &&
+							<Breadcrumbs path={list.path} />
+						}
+
+						{ meta &&
+							<MetaData data={meta} />
+						}
+
+						{ (list && list.folders) &&
+							<div className="flex">
+								{ list.folders.map((item) => {
+									return <AlbumFolder key={item} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
+								})}
 							</div>
-							<div id="artist-list">
-								{
-									artistGroups.map((group) => {
-										return (
-											<div className="artist-group" key={group.letter}>
-												<h4>{group.letter}</h4>
-												<ul>
-													{
-														group.items.map((item) => {
-															return <li key={item} onClick={() => { loadArtist(item) }}>{item}</li>
-														})
-													}
-												</ul>
-											</div>
-										)
-									})
-								}
+						}
+
+						{ (list && list.files) &&
+							<ul>
+								{ list.files.map((item) => {
+									return <li key={item} onClick={() => { playAudio(list.path +'/'+ item) }}><Item item={item} type="mp3" /></li>
+								})}
+							</ul>
+						}
+
+						{ (prevList && prevList.folders) &&
+							<div id="more-from">
+								<h3>More from this artist</h3>
+								<div className="flex">
+									{ prevList.folders.map((item) => {
+										return <AlbumFolder key={item} item={item} parent={prevList.path} onClick={() => { loadList(prevList.path +'/'+ item, true) }} />
+									})}
+								</div>
 							</div>
-						</Fragment>
+						}
+					</div>
+
+					{ playerMeta &&
+						<Player data={playerMeta} onClose={closePlayer} />
 					}
-
 				</div>
 
-				<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
-				{ (list && list.path) &&
-					<Breadcrumbs path={list.path} />
-				}
-
-				{ meta &&
-					<MetaData data={meta} />
-				}
-
-				{ (list && list.folders) &&
-					<div className="flex">
-						{ list.folders.map((item) => {
-							return <AlbumFolder key={item} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
-						})}
-					</div>
-				}
-
-				{ (list && list.files) &&
-					<ul>
-						{ list.files.map((item) => {
-							return <li key={item} onClick={() => { playAudio(list.path +'/'+ item) }}><Item item={item} type="mp3" /></li>
-						})}
-					</ul>
-				}
-
-				{ (prevList && prevList.folders) &&
-					<div id="more-from">
-						<h3>More from this artist</h3>
-						<div className="flex">
-							{ prevList.folders.map((item) => {
-								return <AlbumFolder key={item} item={item} parent={prevList.path} onClick={() => { loadList(prevList.path +'/'+ item, true) }} />
-							})}
-						</div>
-					</div>
-				}
-
-				{ playerMeta &&
-					<Player data={playerMeta} onClose={closePlayer} />
-				}
-				</div>
 			</Fragment>
 		}
 		</div>

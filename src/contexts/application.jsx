@@ -5,6 +5,7 @@ const ApplicationContext = createContext(null);
 const ApplicationProvider = ({ children }) => {
     const defaultState = {
         menuOpen: true,
+        playerState: null, // open|min|null
         song: null,
         playing: false,
         progress: 0,
