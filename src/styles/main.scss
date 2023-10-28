@@ -470,15 +470,17 @@ audio {
 /* ----- PLAYER PANEL ----- */
 
 #player-panel {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   position: fixed;
   top: 50px;
   left: 0;
   width: 100%;
   height: 100%;
+  padding: 20px;
   background-color: $white;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  transition: top 150ms ease-out;
 
   .btn-close {
     position: absolute;
@@ -489,9 +491,50 @@ audio {
     background-color: $l-gray;
   }
 
+  .song-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .title {
+    text-align: center;
+  }
+
   &.min {
-    top: auto;
-    bottom: 0;
-    height: 40px;  
+    top: calc(100vh - 40px);
+    height: 40px; 
+    padding: 0;
+    flex-direction: row;
+
+    .btn-close {
+      top: -40px;
+    }
+
+    .song-info {
+      flex-direction: row;
+      overflow: hidden;
+    }
+
+    .cover {
+      width: 40px;
+    }
+
+    .title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+    }
+
+    .controls {
+      width: 120px;
+    }
+
+    .artist, .prev, audio {
+      display: none;
+    }
   }
 }

@@ -69,6 +69,7 @@ export default function Browser() {
 		}
 
 		browse(path).then((response) => {
+			console.log(response);
 			setList(response);
 		});
 	}
