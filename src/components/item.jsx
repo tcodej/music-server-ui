@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { getTitle } from '../utils';
 
 export default function Item({ item, type }) {
 	return (
@@ -8,7 +9,7 @@ export default function Item({ item, type }) {
 			}
 
 			{ type === 'mp3' &&
-				<div className="item mp3">{item}</div>
+				<div className="item mp3">{getTitle(item)}</div>
 			}
 		</Fragment>
 	);

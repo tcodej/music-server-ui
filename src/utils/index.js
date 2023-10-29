@@ -110,5 +110,14 @@ export const formatTime = (seconds) => {
 
 // return song title based on filename i.e. 03 - The Song Name (remix).mp3
 export const getTitle = (fileName) => {
-    fileName = fileName.split('.');
+    // drop the track number
+    let parts = fileName.split(/^\d{1,4} - /);
+    if (parts.length > 1) {
+        parts.shift();
+    }
+
+    let base = parts.join('');
+    let title = base.substring(0, base.lastIndexOf('.'));
+
+    return title;
 }

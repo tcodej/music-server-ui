@@ -4,6 +4,7 @@ import { useSwipeable } from 'react-swipeable';
 import { getMeta } from '../utils/api';
 import { formatTime } from '../utils';
 import Loading from './loading';
+import Cover from './cover';
 
 export default function Player({ playlist }) {
 	const { appState, updateAppState } = useAppContext();
@@ -37,6 +38,8 @@ export default function Player({ playlist }) {
 	}
 
 	const swipeHandlers = useSwipeable({
+		trackMouse: true,
+
 		onSwipedDown: (e) => {
 			updateAppState({ playerState: 'min' });
 		},
@@ -66,7 +69,8 @@ export default function Player({ playlist }) {
 	}
 
 	const handlePlay = () => {
-		// 
+		// temporary
+		player.current.volume = 0.1;
 	}
 
 	const handleCanPlay = () => {
@@ -166,8 +170,6 @@ export default function Player({ playlist }) {
 	}, [playlist]);
 
 	useEffect(() => {
-		console.log(song);
-
 		if (song) {
 			if (!song.mp3) {
 				return;
@@ -239,8 +241,8 @@ export default function Player({ playlist }) {
 		<div id="player-panel" className={appState.playerState} {...swipeHandlers}>
 			{ song &&
 				<Fragment>
-					<div className="song-info">
-						<img src={song.image} alt={song.title} className="cover" />
+					<div className="song-info" onClick={() => updateAppState({ playerState: 'open' })}>
+						<Cover meta={song} />
 						{ song.title &&	<div className="title">{song.title}</div> }
 						{ song.artist && <div className="artist">{song.artist}</div> }
 					</div>

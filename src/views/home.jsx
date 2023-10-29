@@ -82,6 +82,10 @@ export default function Browser() {
 			appAction.toggleMenu(false);
 			setList(response);
 
+			console.log('scroll');
+			const myDiv = document.getElementById('main-panel');
+			myDiv.scrollTop = 0;
+
 			if (response.meta) {
 				setMeta(response.meta);
 			}

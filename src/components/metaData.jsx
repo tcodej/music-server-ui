@@ -1,3 +1,5 @@
+import Cover from './cover';
+
 export default function MetaData({ data }) {
 	if (data && !data.image) {
 		data.image = '/img/mp3.svg';
@@ -6,7 +8,7 @@ export default function MetaData({ data }) {
 	return (
 		<div className="flex">
 			<div className="third">
-				<img src={data.image} alt={data.title} className="cover" />
+				<Cover meta={data} />
 			</div>
 			<div className="two-thirds">
 			{ data.title &&
