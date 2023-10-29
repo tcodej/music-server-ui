@@ -23,7 +23,7 @@ export default function Browser() {
 	const [list, setList] = useState();
 	const [prevList, setPrevList] = useState();
 	const [meta, setMeta] = useState();
-	const [playerMeta, setPlayerMeta] = useState();
+	const [playlist, setPlaylist] = useState(false);
 	const [filter, setFilter] = useState('');
 
 	useEffect(() => {
@@ -59,17 +59,16 @@ export default function Browser() {
 
 	const loadArtist = (path) => {
 		setMeta();
-		// setPlayerMeta();
+		updateAppState({ playerState: 'min' });
 		setPrevList();
 		setList();
 
-		// below desktop, close sidebar after choosing artist
+		// below desktop breakpoint, close sidebar after choosing artist
 		if (window.innerWidth < 700) {
 			appAction.toggleMenu(false);
 		}
 
 		browse(path).then((response) => {
-			console.log(response);
 			setList(response);
 		});
 	}
@@ -93,10 +92,8 @@ export default function Browser() {
 		appAction.toggleMenu(bool);
 	}
 
-	const playAudio = (path) => {
-		getMeta(path).then((response) => {
-			setPlayerMeta(response);
-		});
+	const loadPlaylist = (index) => {
+		setPlaylist({ path: list.path, songs: list.files, index: index });
 	}
 
 	const doFilter = (e) => {
@@ -112,11 +109,6 @@ export default function Browser() {
 		});
 
 		setArtistGroups(alphaGroup(results));
-	}
-
-	const closePlayer = () => {
-		setPlayerMeta();
-		updateAppState({ playerState: null });
 	}
 
 	const unlock = () => {
@@ -196,8 +188,8 @@ export default function Browser() {
 
 						{ (list && list.files) &&
 							<ul>
-								{ list.files.map((item) => {
-									return <li key={item} onClick={() => { playAudio(list.path +'/'+ item) }}><Item item={item} type="mp3" /></li>
+								{ list.files.map((item, index) => {
+									return <li key={item} onClick={() => { loadPlaylist(index) }}><Item item={item} type="mp3" /></li>
 								})}
 							</ul>
 						}
@@ -214,8 +206,8 @@ export default function Browser() {
 						}
 					</div>
 
-					{ playerMeta &&
-						<Player data={playerMeta} onClose={closePlayer} />
+					{ playlist &&
+						<Player playlist={playlist} />
 					}
 				</div>
 

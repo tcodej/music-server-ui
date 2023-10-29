@@ -73,3 +73,42 @@ export const alphaGroup = (arr, key, ignoreThe) => {
 
     return grouped;
 }
+
+// audio player uses this to format time in seconds as 00:00:00
+export const formatTime = (seconds) => {
+    seconds = parseInt(seconds, 10);
+
+    if (isNaN(seconds)) {
+        return '';
+    }
+
+    let time = [];
+    const hours = Math.floor(seconds / 60 / 60);
+    const minutes = Math.floor((seconds / 60) % 60);
+    seconds = Math.floor(seconds % 60);
+
+    if (hours) {
+        time.push(hours);
+    }
+
+    if (hours && minutes < 10) {
+        time.push('0'+ minutes);
+
+    } else {
+        time.push(minutes);
+    }
+
+    if (seconds < 10) {
+        time.push('0'+ seconds);
+
+    } else {
+        time.push(seconds);
+    }
+
+    return time.join(':');
+}
+
+// return song title based on filename i.e. 03 - The Song Name (remix).mp3
+export const getTitle = (fileName) => {
+    fileName = fileName.split('.');
+}

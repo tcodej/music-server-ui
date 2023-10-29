@@ -5,21 +5,10 @@ const ApplicationContext = createContext(null);
 const ApplicationProvider = ({ children }) => {
     const defaultState = {
         menuOpen: true,
-        playerState: null, // open|min|null
-        song: null,
-        playing: false,
-        progress: 0,
-        arrayBuffer: null,
-        seekTo: 0
+        playerState: null // open|min|null
     };
 
-    const defaultPlayList = {
-        songs: [],
-        index: 0
-    }
-
     const [ appState, setAppState ] = useState(defaultState);
-    const playList = useRef(defaultPlayList);
 
     const appAction = {};
 
@@ -34,82 +23,8 @@ const ApplicationProvider = ({ children }) => {
         updateAppState({ menuOpen: newState });
     }
 
-    appAction.play = (song) => {
-        if (appAction.isCurrentSong(song.id)) {
-            appAction.togglePlay();
-
-        } else {
-            reset();
-            updateAppState({ song: song });
-        }
-    }
-
-    appAction.progress = (progress) => {
-        updateAppState({ progress: progress });
-    }
-
-    appAction.togglePlay = () => {
-        console.log('togglePlay');
-        updateAppState({
-            playing: !appState.playing
-        });
-    }
-
-    appAction.isCurrentSong = (id) => {
-        if (appState.song && appState.song.id === id) {
-            return true;
-        }
-
-        return false;
-    }
-
-    appAction.setBuffer = (arrayBuffer) => {
-        updateAppState({
-            arrayBuffer: arrayBuffer
-        });
-    }
-
-    appAction.setPlayList = (data) => {
-        console.log('setting playList', data);
-        updateAppState({
-            song: data.songs[data.index]
-        });
-
-        playList.current = {
-            songs: data.songs,
-            index: data.index
-        };
-    }
-
-    appAction.playListNext = (dir) => {
-        console.log('playListNext', playList.current);
-        if (!playList.current) {
-            return;
-        }
-
-        if (!dir) {
-            dir = 1;
-        }
-
-        playList.current.index += dir;
-
-        if (playList.current.index < playList.current.songs.length && playList.current.index > -1) {
-            updateAppState({
-                song: playList.current.songs[playList.current.index]
-            });
-
-        } else {
-            reset();
-        }
-    }
-
-    appAction.getPlayList = () => {
-        return playList.current;
-    }
-
     const reset = () => {
         setAppState(defaultState);
-        playList.current = defaultPlayList;
     }
 
     const updateAppState = (newVals) => {
