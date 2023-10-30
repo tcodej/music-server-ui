@@ -495,26 +495,16 @@ $time: 150ms;
   background-color: $white;
   transition: height $time ease-out;
 
-  audio {
-    display: none;
-  }
-
-  .btn-close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20px;
-    height: 20px;
-    background-color: $l-gray;
-  }
-
   .song-info {
     @extend .no-select;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
     width: 100%;
+  }
+
+  .song-info, .cover, .time {
+    margin-bottom: 20px;
   }
 
   .cover {
@@ -525,9 +515,22 @@ $time: 150ms;
     text-align: center;
   }
 
+  .time, .minutes {
+    width: 100%;
+  }
+
+  .minutes {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .progress {
     position: relative;
     width: 100%;
+    height: 5px;
+    background-color: $l-gray;
+    overflow: hidden;
+    border-radius: 5px;
 
     .bar {
       background-color: $black;
@@ -536,19 +539,54 @@ $time: 150ms;
     }
   }
 
+  .controls {
+    display: flex;
+    width: 100%;
+    max-width: 300px;
+    justify-content: space-around;
+
+    button {
+      padding: 0;
+      width: 60px;
+      height: 60px;
+      overflow: hidden;
+      text-indent: -999em;
+      background-repeat: no-repeat;
+      background-size: 30px;
+      background-position: center;
+
+      &.prev {
+        background-image: url('../assets/img/control-prev.svg');
+      }
+
+      &.playpause {
+        background-image: url('../assets/img/control-play.svg');
+        background-size: 50px;
+
+        &.is-playing {
+          background-image: url('../assets/img/control-pause.svg');
+        }
+      }
+
+      &.next {
+        background-image: url('../assets/img/control-next.svg');
+      }
+    }
+  }
+
   &.min {
-    // top: calc(100vh - 100px);
     height: 62px; 
     padding: 0;
     flex-direction: row;
 
-    .btn-close {
-      top: -40px;
+    .song-info, .cover, .time {
+      margin: 0;
     }
 
     .song-info {
       flex-direction: row;
       overflow: hidden;
+      gap: 10px;
     }
 
     .cover {
@@ -563,10 +601,18 @@ $time: 150ms;
     }
 
     .controls {
-      width: 120px;
+      width: 90px;
+
+      button {
+        width: 40px;
+      }
+
+      .playpause {
+        background-size: 30px;
+      }
     }
 
-    .artist, .prev, .progress {
+    .artist, .prev, .time {
       display: none;
     }
   }

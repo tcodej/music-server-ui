@@ -1,6 +1,7 @@
 import Cover from './cover';
 
 export default function MetaData({ data }) {
+	console.log(data);
 	if (data && !data.image) {
 		data.image = '/img/mp3.svg';
 	}
@@ -11,9 +12,7 @@ export default function MetaData({ data }) {
 				<Cover meta={data} />
 			</div>
 			<div className="two-thirds">
-			{ data.title &&
-				<div>Song: {data.title}</div>
-			}
+
 			{ data.artist &&
 				<div>Artist: {data.artist}</div>
 			}

@@ -246,13 +246,18 @@ export default function Player({ playlist }) {
 						{ song.title &&	<div className="title">{song.title}</div> }
 						{ song.artist && <div className="artist">{song.artist}</div> }
 					</div>
-					<div className="progress">
-						<div className="time current">{state.currentTime}/{state.duration}</div>
-						<div className="bar" style={{ width: `${state.percent}%` }}></div>
+					<div className="time">
+						<div className="progress">
+							<div className="bar" style={{ width: `${state.percent}%` }}></div>
+						</div>
+						<div className="minutes">
+							<div className="current">{state.currentTime}</div>
+							<div className="duration">{state.duration}</div>
+						</div>
 					</div>
 					<div className="controls">
 						<button type="button" className="prev" onClick={prevTrack}>RR</button>
-						<button type="button" className="playpause" onClick={togglePlay}>P</button>
+						<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>P</button>
 						<button type="button" className="next" onClick={nextTrack}>FF</button>
 					</div>
 				</Fragment>
