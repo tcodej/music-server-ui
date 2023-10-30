@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 import { ApplicationProvider } from './contexts/application';
 import Header from './components/header';
-import Footer from './components/footer';
 import Home from './views/home';
 import Error404 from './views/error404';
 import './styles/main.scss';
@@ -22,7 +21,6 @@ export default function App() {
 						<Route path="*" element={<Error404 />} />
 					</Routes>
 				</div>
-				<Footer />
 			</BrowserRouter>
 		</ApplicationProvider>
 	)

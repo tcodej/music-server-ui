@@ -4,6 +4,7 @@ const ApplicationContext = createContext(null);
 
 const ApplicationProvider = ({ children }) => {
     const defaultState = {
+        header: 'Music Server',
         menuOpen: true,
         playerState: null // open|min|null
     };

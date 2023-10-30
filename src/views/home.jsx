@@ -59,7 +59,10 @@ export default function Browser() {
 
 	const loadArtist = (path) => {
 		setMeta();
-		updateAppState({ playerState: 'min' });
+		updateAppState({
+			header: path,
+			playerState: 'min'
+		});
 		setPrevList();
 		setList();
 
@@ -82,9 +85,8 @@ export default function Browser() {
 			appAction.toggleMenu(false);
 			setList(response);
 
-			console.log('scroll');
-			const myDiv = document.getElementById('main-panel');
-			myDiv.scrollTop = 0;
+			const mainDiv = document.getElementById('main-panel');
+			mainDiv.scrollTop = 0;
 
 			if (response.meta) {
 				setMeta(response.meta);

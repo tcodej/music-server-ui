@@ -70,7 +70,7 @@ export default function Player({ playlist }) {
 
 	const handlePlay = () => {
 		// temporary
-		player.current.volume = 0.1;
+		// player.current.volume = 0.1;
 	}
 
 	const handleCanPlay = () => {
