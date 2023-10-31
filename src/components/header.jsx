@@ -16,7 +16,7 @@ export default function Header() {
 				<span></span>
 				<span></span>
 			</div>
-			<h1><Link to="/">{appState.header}</Link></h1>
+			<h1><Link to={`/${appState.header}`}>{appState.header}</Link></h1>
 		</header>
 	);
 }

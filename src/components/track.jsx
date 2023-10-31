@@ -1,4 +1,8 @@
-export default function Item({ num, total, item }) {
+import { useAppContext } from '../contexts/application';
+
+export default function Track({ num, total, item }) {
+	const { appState } = useAppContext();
+
 	// return a zero-padded track number
 	const getNum = () => {
 		return num.toString().padStart(total.toString().length, '0');
@@ -18,7 +22,15 @@ export default function Item({ num, total, item }) {
 		return title;
 	}
 
+	const isCurrent = (mp3) => {
+		if (appState.isCurrent === mp3) {
+			return ' is-current';
+		}
+
+		return '';
+	}
+
 	return (
-		<div className="item">{getNum()} - {getTitle(item)}</div>
+		<div className={`track${isCurrent(item)}`}>{getNum()}. {getTitle(item)}</div>
 	);
 }

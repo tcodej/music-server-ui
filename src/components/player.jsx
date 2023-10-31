@@ -158,6 +158,8 @@ export default function Player({ playlist }) {
 	const playAudio = (path) => {
 		getMeta(path).then((response) => {
 			setSong(response);
+			updateAppState({ currentTrack: response.mp3 });
+			console.log('song', path);
 		});
 	}
 
@@ -166,7 +168,7 @@ export default function Player({ playlist }) {
 	}
 
 	useEffect(() => {
-		console.log('playlist', playlist);
+		// console.log('playlist', playlist);
 		if (playlist.songs[playlist.index]) {
 			playAudio(playlist.path +'/'+ playlist.songs[playlist.index]);
 		}
@@ -260,9 +262,9 @@ export default function Player({ playlist }) {
 						</div>
 					</div>
 					<div className="controls">
-						<button type="button" className="prev" onClick={prevTrack}>RR</button>
-						<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>P</button>
-						<button type="button" className="next" onClick={nextTrack}>FF</button>
+						<button type="button" className="prev" onClick={prevTrack}>Prev</button>
+						<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
+						<button type="button" className="next" onClick={nextTrack}>Next</button>
 					</div>
 				</Fragment>
 			}

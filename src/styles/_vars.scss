@@ -1,7 +1,8 @@
 @use 'sass:math';
 
 // scss vars
-$font-body: 'Sono', sans-serif;
+$font-mono: 'Sono', sans-serif;
+$font-body: 'Poppins', sans-serif;
 $font-header: 'Poppins', sans-serif;
 
 $white: #fff;
@@ -14,6 +15,7 @@ $d-gray: #222;
 $black: #000;
 $black50: rgba(0, 0, 0, 0.5);
 $red: #d50000;
+$blue: #2776ff;
 $shadow: rgba(0, 0, 0, 0.14);
 
 $bp-xlarge: 1440px;
@@ -22,6 +24,8 @@ $bp-tablet: 960px;
 $bp-mobile: 700px;
 $bp-mobile-sm: 480px;
 
+$thin: 100;
+$ex-light: 200;
 $light: 300;
 $reg: 400;
 $med: 500;

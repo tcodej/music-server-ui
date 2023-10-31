@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sono:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300&family=Sono:wght@200&display=swap');
 
 @import '_reset.scss';
 @import '_vars.scss';
@@ -11,7 +10,7 @@ html, body {
   min-height: calc(100vh - 50px);
   background-color: $d-gray;
   font-family: $font-body;
-  font-weight: $light;
+  font-weight: $thin;
   font-size: 14px;
   text-align: left;
   color: $l-gray;
@@ -41,7 +40,7 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-header;
-  font-weight: $reg;
+  font-weight: $light;
   text-transform: uppercase;
 }
 
@@ -194,9 +193,6 @@ button {
   color: $l-gray;
   font-size: 16px;
   text-align: center;
-  min-height: 38px;
-  padding: 6px 14px;
-  // margin-right: 20px;
   border: none;
   cursor: pointer;
 }
@@ -204,7 +200,7 @@ button {
 p, pre, code {
   margin: 10px 0;
   font-family: $font-body;
-  font-weight: $light;
+  font-weight: $ex-light;
   font-size: 16px;
 }
 
@@ -226,6 +222,16 @@ audio {
 
 .row {
   margin: 30px 0;
+}
+
+.btn-clear {
+  @extend .no-text;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../assets/img/icon-clear.svg');
 }
 
 /* ----- PASSCODE PANEL ----- */
@@ -275,10 +281,9 @@ audio {
   }
 
   .dot {
+    @extend .no-text;
     width: 14px;
     height: 14px;
-    overflow: hidden;
-    text-indent: -999em;
     background-color: $l-gray;
     border-radius: 50%;
   }
@@ -357,49 +362,70 @@ audio {
   }
 }
 
+#artist-album {
+  max-width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .meta {
+    margin-top: 10px;
+    text-align: center;
+  }
+}
+
 #artist-list {
   position: relative;
   top: 50px;
   height: calc(100% - 50px);
   overflow-y: auto;
+  padding-bottom: 100px;
 
   li {
     font-size: 20px;
-
-    // &:hover {
-    //   cursor: pointer;
-    //   background-color: $l-gray;
-    // }
   }
 
   h4 {
     margin-top: 20px;
-    background-color: $l-gray;
-    color: $d-gray;
+    background-color: $black;
+    color: $white;
     padding-left: 10px;
+    line-height: 34px;
+    position: sticky;
+    top: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .artist-group {
+    &:first-child h4 {
+      margin-top: 0;
+    }
+
+    li {
+      padding: 4px 10px;
+    }
   }
 }
 
 #artist-filter {
   display: flex;
+  align-items: center;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 50px;
   padding: 10px;
-  border-right: 1px solid $l-gray;
-  border-bottom: 1px solid $l-gray;
+  border-right: 1px solid $m-gray;
+  background-color: $d-gray;
 
   input {
     width: 100%;
-    background-color: $d-gray;
-  }
-}
-
-.artist-group {
-  li {
-    padding: 4px 10px;
+    padding-right: 10px;
   }
 }
 
@@ -407,9 +433,11 @@ audio {
   margin-top: 20px;
 }
 
-.item {
+.track {
+  font-family: $font-mono;
   border-bottom: 1px solid $m-gray;
-  padding: 10px 5px;
+  color: $white;
+  padding: 10px 0;
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: 2px center;
@@ -419,9 +447,9 @@ audio {
   overflow: hidden;
   text-overflow: ellipsis;
 
-  // &:hover {
-  //   background-color: $l-gray;
-  // }
+  &.is-current {
+    background-color: $blue;
+  }
 
   &.folder {
     background-image: url(/img/folder.svg);
@@ -454,6 +482,11 @@ audio {
   margin-top: 60px;
 }
 
+.album-list {
+  @extend .flex;
+  max-width: $bp-xlarge;
+}
+
 .album {
   width: 160px;
   font-size: 12px;
@@ -476,6 +509,7 @@ audio {
 $time: 150ms;
 
 #player-panel {
+  @extend .no-select;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -513,8 +547,10 @@ $time: 150ms;
   }
 
   .minutes {
+    font-family: $font-mono;
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
   }
 
   .progress {
@@ -526,24 +562,25 @@ $time: 150ms;
     border-radius: 5px;
 
     .bar {
-      background-color: $l-gray;
+      background-color: $blue;
       width: 50%;
       height: 100%;
     }
   }
 
+  .song-info, .time, .controls {
+    max-width: 300px;
+  }
+
   .controls {
     display: flex;
     width: 100%;
-    max-width: 300px;
     justify-content: space-around;
 
     button {
-      padding: 0;
+      @extend .no-text;
       width: 60px;
       height: 60px;
-      overflow: hidden;
-      text-indent: -999em;
       background-repeat: no-repeat;
       background-size: 30px;
       background-position: center;
@@ -571,6 +608,7 @@ $time: 150ms;
     height: 62px; 
     padding: 0;
     flex-direction: row;
+    box-shadow: 0 10px 12px -6px #000000, 0 -6px 6px 0 $shadow;
 
     .song-info, .cover, .time {
       margin: 0;
@@ -580,6 +618,7 @@ $time: 150ms;
       flex-direction: row;
       overflow: hidden;
       gap: 10px;
+      max-width: 100%;
     }
 
     .cover {
@@ -595,6 +634,7 @@ $time: 150ms;
 
     .controls {
       width: 90px;
+      padding-right: 10px;
 
       button {
         width: 40px;

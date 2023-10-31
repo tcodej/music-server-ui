@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 
 import { browse } from '../utils/api';
 import { alphaGroup } from '../utils';
-import Item from '../components/item';
+import Track from '../components/track';
 import MetaData from '../components/metaData';
 import Breadcrumbs from '../components/breadcrumbs';
 import AlbumFolder from '../components/albumFolder';
@@ -36,6 +36,7 @@ export default function Browser() {
 		const urlPath = params['*'];
 
 		if (urlPath) {
+			console.log('load', urlPath);
 			loadArtist(urlPath);
 
 		} else {
@@ -46,10 +47,6 @@ export default function Browser() {
 
 	const loadArtist = (path) => {
 		setMeta();
-		updateAppState({
-			header: path,
-			playerState: 'min'
-		});
 		setPrevList();
 		setList();
 
@@ -59,7 +56,17 @@ export default function Browser() {
 		}
 
 		browse(path).then((response) => {
-			setList(response);
+			if (response.ok) {
+				console.log('loadArtist ok');
+				setList(response);
+				updateAppState({
+					header: path,
+					playerState: 'min'
+				});
+
+			} else {
+				console.log('loadArtist not okay');
+			}
 		});
 	}
 
@@ -70,7 +77,15 @@ export default function Browser() {
 
 		browse(path).then((response) => {
 			appAction.toggleMenu(false);
-			setList(response);
+
+			if (response.ok) {
+				console.log('loadList ok');
+				setList(response);
+
+			} else {
+				console.log('loadList not ok');
+				setList();
+			}
 
 			const mainDiv = document.getElementById('main-panel');
 			mainDiv.scrollTop = 0;
@@ -104,6 +119,11 @@ export default function Browser() {
 		setArtistGroups(alphaGroup(results));
 	}
 
+	const clearFilter = () => {
+		setFilter('');
+		setArtistGroups(alphaGroup(artists));
+	}
+
 	const swipeHandlers = useSwipeable({
 		delta: 100,
 		swipeDuration: 500,
@@ -126,7 +146,8 @@ export default function Browser() {
 						{ artistGroups &&
 							<Fragment>
 								<div id="artist-filter">
-									<input type="text" value={filter} onChange={doFilter} placeholder="Find in Artists" />
+									<input type="text" value={filter} maxLength="30" onChange={doFilter} placeholder="Find in Artists" />
+									{ filter &&	<button type="button" className="btn-clear" onClick={clearFilter}>Clear</button> }
 								</div>
 								<div id="artist-list">
 									{
@@ -137,7 +158,8 @@ export default function Browser() {
 													<ul>
 														{
 															group.items.map((item) => {
-																return <li key={item} onClick={() => { loadArtist(item) }}>{item}</li>
+																{/*return <li key={item} onClick={() => { loadArtist(item) }}>{item}</li>*/}
+																return <li key={item}><Link to={`/${item}`}>{item}</Link></li>
 															})
 														}
 													</ul>
@@ -161,7 +183,7 @@ export default function Browser() {
 						}
 
 						{ (list && list.folders.length > 0) &&
-							<div className="flex">
+							<div className="album-list">
 								{ list.folders.map((item) => {
 									return <AlbumFolder key={item} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
 								})}
@@ -171,7 +193,7 @@ export default function Browser() {
 						{ (list && list.files.length > 0) &&
 							<ul className="track-list">
 								{ list.files.map((item, index) => {
-									return <li key={item} onClick={() => { loadPlaylist(index) }}><Item num={index+1} total={list.files.length} item={item} /></li>
+									return <li key={item} onClick={() => { loadPlaylist(index) }}><Track num={index+1} total={list.files.length} item={item} /></li>
 								})}
 							</ul>
 						}
@@ -179,7 +201,7 @@ export default function Browser() {
 						{ (prevList && prevList.folders.length > 0) &&
 							<div id="more-from">
 								<h3>More from this artist</h3>
-								<div className="flex">
+								<div className="album-list">
 									{ prevList.folders.map((item) => {
 										return <AlbumFolder key={item} item={item} parent={prevList.path} onClick={() => { loadList(prevList.path +'/'+ item, true) }} />
 									})}

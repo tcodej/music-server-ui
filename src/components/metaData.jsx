@@ -8,7 +8,6 @@ export default function MetaData({ data }) {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data);
 			if (!data.image) {
 				data.image = '/img/mp3.svg';
 			}
@@ -25,12 +24,10 @@ export default function MetaData({ data }) {
 	return (
 		<Fragment>
 			{ meta &&
-				<div className="flex">
-					<div className="third">
-						<Cover meta={meta} />
-					</div>
+				<div id="artist-album">
+					<Cover meta={meta} />
 
-					<div className="two-thirds">
+					<div className="meta">
 						{ meta.artist &&
 							<div>{meta.artist}</div>
 						}

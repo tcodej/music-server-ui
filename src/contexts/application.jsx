@@ -6,7 +6,10 @@ const ApplicationProvider = ({ children }) => {
     const defaultState = {
         header: 'Music Server',
         menuOpen: true,
-        playerState: null // open|min|null
+        // open|min|null
+        playerState: null,
+        // used to determine which track to highlight when playing
+        currentTrack: ''
     };
 
     const [ appState, setAppState ] = useState(defaultState);
