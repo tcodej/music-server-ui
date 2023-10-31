@@ -19,8 +19,8 @@ export default function MetaData({ data }) {
 
 			setMeta(data);
 		}
+	// eslint-disable-next-line
 	}, [data]);
-
 
 	return (
 		<Fragment>
@@ -29,23 +29,20 @@ export default function MetaData({ data }) {
 					<div className="third">
 						<Cover meta={meta} />
 					</div>
-					<div className="two-thirds">
 
-					{ meta.artist &&
-						<div>Artist: {meta.artist}</div>
-					}
-					{ meta.album &&
-						<div>Album: {meta.album}</div>
-					}
-					{ meta.year &&
-						<div>Released: {meta.year}</div>
-					}
-					{ meta.track &&
-						<div>Track No.: {meta.track.no}</div>
-					}
-					{ meta.genre &&
-						<div>Genre: {meta.genre[0]}</div>
-					}
+					<div className="two-thirds">
+						{ meta.artist &&
+							<div>{meta.artist}</div>
+						}
+						{ meta.album &&
+							<div>{meta.album}</div>
+						}
+						{ meta.year &&
+							<div>{meta.year}</div>
+						}
+						{ meta.genre &&
+							<div>{meta.genre.join('/')}</div>
+						}
 					</div>
 				</div>
 			}

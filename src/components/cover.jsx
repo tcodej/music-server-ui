@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import square from '../assets/img/transparent-square.png';
 
 export default function Cover({ meta }) {
@@ -8,8 +8,14 @@ export default function Cover({ meta }) {
 		alt: 'Loading...'
 	});
 
+	const [ className, setClassName ] = useState('');
+
 	useEffect(() => {
 		if (meta) {
+			if (!meta.image) {
+				setClassName(' folder');
+			}
+
 			const image = meta.image ? meta.image : '/img/folder.svg';
 			const alt = meta.album ? meta.album : 'Album Cover';
 
@@ -21,7 +27,7 @@ export default function Cover({ meta }) {
 	}, [meta]);
 
 	return (
-		<div className="cover" style={{ backgroundImage: `url(${data.image})` }}>
+		<div className={`cover${className}`} style={{ backgroundImage: `url(${data.image})` }}>
 			<img src={square} alt={data.alt} draggable="false" />
 		</div>
 	)

@@ -3,20 +3,18 @@ import { useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 
-import { browse, getMeta } from '../utils/api';
+import { browse } from '../utils/api';
 import { alphaGroup } from '../utils';
 import Item from '../components/item';
 import MetaData from '../components/metaData';
 import Breadcrumbs from '../components/breadcrumbs';
 import AlbumFolder from '../components/albumFolder';
 import Player from '../components/player';
-import Passcode from '../components/passcode';
 
 export default function Browser() {
 	const params = useParams();
 	const { appState, appAction, updateAppState } = useAppContext();
 
-	const [authenticated, setAuthenticated] = useState(false);
 	const [loaded, setLoaded] = useState(false);
 	const [artists, setArtists] = useState();
 	const [artistGroups, setArtistGroups] = useState();
@@ -27,18 +25,6 @@ export default function Browser() {
 	const [filter, setFilter] = useState('');
 
 	useEffect(() => {
-		if (!authenticated) {
-			if (sessionStorage.getItem('authenticated')) {
-				setAuthenticated(true);
-			}
-		}
-	}, [authenticated]);
-
-	useEffect(() => {
-		if (!authenticated) {
-			return;
-		}
-
 		if (!loaded) {
 			browse().then((response) => {
 				setLoaded(true);
@@ -55,7 +41,8 @@ export default function Browser() {
 		} else {
 			setList();
 		}
-	}, [authenticated, loaded, params]);
+	// eslint-disable-next-line
+	}, [loaded, params]);
 
 	const loadArtist = (path) => {
 		setMeta();
@@ -117,19 +104,15 @@ export default function Browser() {
 		setArtistGroups(alphaGroup(results));
 	}
 
-	const unlock = () => {
-		setAuthenticated(true);
-	}
-
 	const swipeHandlers = useSwipeable({
 		delta: 100,
 		swipeDuration: 500,
 
-		onSwipedLeft: (e) => {
+		onSwipedLeft: () => {
 			sideToggle(false);
 		},
 
-		onSwipedRight: (e) => {
+		onSwipedRight: () => {
 			sideToggle(true);
 		}
 	});
@@ -137,13 +120,6 @@ export default function Browser() {
 	return (
 		<div id="page-home">
 
-		{ !authenticated ?
-
-			<Passcode onUnlock={unlock} />
-
-		:
-
-			<Fragment>
 				<div id="music-browser" {...swipeHandlers}>
 					<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
 
@@ -184,7 +160,7 @@ export default function Browser() {
 							<MetaData data={meta} />
 						}
 
-						{ (list && list.folders) &&
+						{ (list && list.folders.length > 0) &&
 							<div className="flex">
 								{ list.folders.map((item) => {
 									return <AlbumFolder key={item} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
@@ -192,15 +168,15 @@ export default function Browser() {
 							</div>
 						}
 
-						{ (list && list.files) &&
-							<ul>
+						{ (list && list.files.length > 0) &&
+							<ul className="track-list">
 								{ list.files.map((item, index) => {
-									return <li key={item} onClick={() => { loadPlaylist(index) }}><Item item={item} type="mp3" /></li>
+									return <li key={item} onClick={() => { loadPlaylist(index) }}><Item num={index+1} total={list.files.length} item={item} /></li>
 								})}
 							</ul>
 						}
 
-						{ (prevList && prevList.folders) &&
+						{ (prevList && prevList.folders.length > 0) &&
 							<div id="more-from">
 								<h3>More from this artist</h3>
 								<div className="flex">
@@ -217,8 +193,7 @@ export default function Browser() {
 					}
 				</div>
 
-			</Fragment>
-		}
+
 		</div>
 	);
 }

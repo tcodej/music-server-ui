@@ -3,7 +3,6 @@ import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import { getMeta } from '../utils/api';
 import { formatTime } from '../utils';
-import Loading from './loading';
 import Cover from './cover';
 
 export default function Player({ playlist }) {
@@ -40,11 +39,11 @@ export default function Player({ playlist }) {
 	const swipeHandlers = useSwipeable({
 		trackMouse: true,
 
-		onSwipedDown: (e) => {
+		onSwipedDown: () => {
 			updateAppState({ playerState: 'min' });
 		},
 
-		onSwipedUp: (e) => {
+		onSwipedUp: () => {
 			updateAppState({ playerState: 'open' });
 		}
 	});
@@ -100,24 +99,24 @@ export default function Player({ playlist }) {
 
 	const updateProgress = (value) => {
 		if (Array.isArray(value)) {
-		    value = value[0];
+			value = value[0];
 		}
 
 		if (player.current.seeking) {
-		    return;
+			return;
 		}
 
 		let progress = player.current.currentTime;
 
 		if (value) {
-		    progress = value;
-		    player.current.currentTime = progress;
+			progress = value;
+			player.current.currentTime = progress;
 		}
 
 		let percent = (player.current.currentTime / player.current.duration) * 100;
 
 		if (isNaN(percent)) {
-		    percent = 0;
+			percent = 0;
 		}
 
 		updateState({
@@ -160,6 +159,10 @@ export default function Player({ playlist }) {
 		getMeta(path).then((response) => {
 			setSong(response);
 		});
+	}
+
+	const seek = () => {
+		//
 	}
 
 	useEffect(() => {
@@ -235,7 +238,8 @@ export default function Player({ playlist }) {
 				});
 			}
 		}
-  }, [song]);
+	// eslint-disable-next-line
+ 	}, [song]);
 
 	return (
 		<div id="player-panel" className={appState.playerState} {...swipeHandlers}>

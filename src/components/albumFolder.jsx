@@ -17,29 +17,19 @@ export default function AlbumFolder({ item, parent, onClick }) {
 		}
 	}, [meta, item, parent]);
 
-	const getImage = () => {
-		let image = (meta && meta.image) ? meta.image : '/img/folder.svg';
-
-		return (
-			<div className="cover" style={{ backgroundImage: `url(${image})` }}>
-				<img src='/img/transparent-square.png' alt={item} draggable="false" />
-			</div>
-		)
-	}
-
 	return (
 		<div className="album" onClick={onClick}>
 			{ full &&
 				<Fragment>
 					<Cover meta={meta} />
-					<div>{full}</div>
+					<div className="title">{full}</div>
 				</Fragment>
 			}
 
 			{ (first && second) &&
 				<Fragment>
 					<Cover meta={meta} />
-					<div>{second}<br />{first}</div>
+					<div className="title">{second}<br />{first}</div>
 				</Fragment>
 			}
 		</div>

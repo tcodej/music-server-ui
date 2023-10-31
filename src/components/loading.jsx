@@ -1,4 +1,4 @@
-export default function Loading(props) {
+export default function Loading() {
 	return (
 		<div id="loader">
 			<div className="loading">

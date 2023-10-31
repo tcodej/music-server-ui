@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useRef } from 'react';
+import { useState, createContext, useContext } from 'react';
 
 const ApplicationContext = createContext(null);
 
@@ -24,10 +24,6 @@ const ApplicationProvider = ({ children }) => {
         updateAppState({ menuOpen: newState });
     }
 
-    const reset = () => {
-        setAppState(defaultState);
-    }
-
     const updateAppState = (newVals) => {
         setAppState(prevVals => {
             return {
@@ -46,4 +42,5 @@ const ApplicationProvider = ({ children }) => {
 
 const useAppContext = () => useContext(ApplicationContext);
 
+// eslint-disable-next-line
 export { ApplicationContext, ApplicationProvider, useAppContext };
