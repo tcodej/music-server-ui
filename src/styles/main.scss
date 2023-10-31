@@ -426,6 +426,7 @@ audio {
   input {
     width: 100%;
     padding-right: 10px;
+    font-size: 18px;
   }
 }
 
@@ -450,18 +451,11 @@ audio {
   &.is-current {
     background-color: $blue;
   }
-
-  &.folder {
-    background-image: url(/img/folder.svg);
-  }
-
-  &.mp3 {
-    background-image: url(/img/mp3.svg);
-  }
 }
 
 // meta album cover
 .cover {
+  position: relative;
   width: 100%;
   max-width: 200px;
   background-size: contain;
@@ -473,8 +467,8 @@ audio {
     width: 100%;
   }
 
-  &.folder {
-    background-size: 80px;
+  &.small {
+    background-size: 50%;
   }
 }
 
@@ -491,6 +485,7 @@ audio {
   width: 160px;
   font-size: 12px;
   text-align: center;
+  cursor: pointer;
 
   img {
     width: 100%;

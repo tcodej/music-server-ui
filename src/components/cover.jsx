@@ -1,34 +1,52 @@
 import { useState, useEffect } from 'react';
 import square from '../assets/img/transparent-square.png';
+import folderIcon from '../assets/img/icon-folder.svg';
+import mp3Icon from '../assets/img/icon-mp3.svg';
+import Loading from './loading';
 
 export default function Cover({ meta }) {
-
 	const [data, setData] = useState({
-		image: '/img/folder.svg',
-		alt: 'Loading...'
+		image: '',
+		alt: 'Loading...',
+		className: ' small'
 	});
 
-	const [ className, setClassName ] = useState('');
-
 	useEffect(() => {
+		let image = '';
+		let className = '';
+
 		if (meta) {
-			if (!meta.image) {
-				setClassName(' folder');
+			if (meta.image) {
+				image = meta.image;
+
+			} else {
+				className = ' small';
+
+				if (meta.mp3) {
+					image = mp3Icon;
+
+				} else {
+					image = folderIcon;
+				}
 			}
 
-			const image = meta.image ? meta.image : '/img/folder.svg';
 			const alt = meta.album ? meta.album : 'Album Cover';
 
 			setData({
 				image: image,
-				alt: alt
+				alt: alt,
+				className: className
 			});
 		}
 	}, [meta]);
 
 	return (
-		<div className={`cover${className}`} style={{ backgroundImage: `url(${data.image})` }}>
+		<div className={`cover${data.className}`} style={{ backgroundImage: `url(${data.image})` }}>
 			<img src={square} alt={data.alt} draggable="false" />
+
+			{ !data.image &&
+				<Loading />
+			}
 		</div>
 	)
 }

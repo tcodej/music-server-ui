@@ -4,6 +4,7 @@ import { useSwipeable } from 'react-swipeable';
 import { getMeta } from '../utils/api';
 import { formatTime } from '../utils';
 import Cover from './cover';
+import mp3Icon from '../assets/img/icon-mp3.svg';
 
 export default function Player({ playlist }) {
 	const { appState, updateAppState } = useAppContext();
@@ -148,6 +149,10 @@ export default function Player({ playlist }) {
 	}
 
 	const getArtwork = (size) => {
+		if (!song.image) {
+			song.image = mp3Icon;
+		}
+
 		return {
 			src: song.image,
 			sizes: `${size}x${size}`,
@@ -180,9 +185,9 @@ export default function Player({ playlist }) {
 				return;
 			}
 
-			if (!song.image) {
-				song.image = '/img/mp3.svg';
-			}
+			// if (!song.image) {
+			// 	song.image = '/img/mp3.svg';
+			// }
 
 			if (!listenersAdded) {
 				setListenersAdded(true);
@@ -212,6 +217,8 @@ export default function Player({ playlist }) {
 						getArtwork(512)
 					]
 				};
+
+				console.log(metaData);
 
 				navigator.mediaSession.metadata = new MediaMetadata(metaData);
 

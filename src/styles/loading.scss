@@ -1,10 +1,10 @@
 #loader {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: $white;
+  background-color: $d-gray;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,11 +21,11 @@
 
 .loading div {
   position: absolute;
-  top: 33px;
-  width: 13px;
-  height: 13px;
+  top: 38px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: $red;
+  background: $blue;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 

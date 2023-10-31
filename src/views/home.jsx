@@ -122,6 +122,7 @@ export default function Browser() {
 	const clearFilter = () => {
 		setFilter('');
 		setArtistGroups(alphaGroup(artists));
+		document.getElementById('field-filter').focus();
 	}
 
 	const swipeHandlers = useSwipeable({
@@ -142,11 +143,10 @@ export default function Browser() {
 
 				<div id="music-browser" {...swipeHandlers}>
 					<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
-
 						{ artistGroups &&
 							<Fragment>
 								<div id="artist-filter">
-									<input type="text" value={filter} maxLength="30" onChange={doFilter} placeholder="Find in Artists" />
+									<input type="text" id="field-filter" value={filter} maxLength="30" onChange={doFilter} placeholder="Find in Artists" />
 									{ filter &&	<button type="button" className="btn-clear" onClick={clearFilter}>Clear</button> }
 								</div>
 								<div id="artist-list">
@@ -158,7 +158,6 @@ export default function Browser() {
 													<ul>
 														{
 															group.items.map((item) => {
-																{/*return <li key={item} onClick={() => { loadArtist(item) }}>{item}</li>*/}
 																return <li key={item}><Link to={`/${item}`}>{item}</Link></li>
 															})
 														}
@@ -170,7 +169,6 @@ export default function Browser() {
 								</div>
 							</Fragment>
 						}
-
 					</div>
 
 					<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
