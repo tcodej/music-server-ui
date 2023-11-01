@@ -36,19 +36,23 @@ export default function Browser() {
 		const urlPath = params['*'];
 
 		if (urlPath) {
-			console.log('load', urlPath);
 			loadArtist(urlPath);
 
 		} else {
-			setList();
+			reset();
+			sideToggle(true);
 		}
 	// eslint-disable-next-line
 	}, [loaded, params]);
 
-	const loadArtist = (path) => {
+	const reset = () => {
 		setMeta();
 		setPrevList();
 		setList();
+	}
+
+	const loadArtist = (path) => {
+		reset();
 
 		// below desktop breakpoint, close sidebar after choosing artist
 		if (window.innerWidth < 700) {
@@ -57,15 +61,11 @@ export default function Browser() {
 
 		browse(path).then((response) => {
 			if (response.ok) {
-				console.log('loadArtist ok');
 				setList(response);
 				updateAppState({
 					header: path,
 					playerState: 'min'
 				});
-
-			} else {
-				console.log('loadArtist not okay');
 			}
 		});
 	}
@@ -79,11 +79,9 @@ export default function Browser() {
 			appAction.toggleMenu(false);
 
 			if (response.ok) {
-				console.log('loadList ok');
 				setList(response);
 
 			} else {
-				console.log('loadList not ok');
 				setList();
 			}
 
@@ -105,13 +103,13 @@ export default function Browser() {
 	}
 
 	const doFilter = (e) => {
-		const q = e.currentTarget.value.toLowerCase();
+		const q = e.currentTarget.value.trimStart();
 		setFilter(q);
 
 		let results = [];
 
 		artists.forEach((item) => {
-			if (item.toLowerCase().indexOf(q) > -1) {
+			if (item.toLowerCase().indexOf(q.trim().toLowerCase()) > -1) {
 				results.push(item);
 			}
 		});

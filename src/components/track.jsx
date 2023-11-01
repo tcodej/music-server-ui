@@ -9,9 +9,9 @@ export default function Track({ num, total, item }) {
 	}
 
 	// return song title based on filename i.e. 03 - The Song Name (remix).mp3
-	const getTitle = (fileName) => {
+	const getTitle = () => {
 		// drop the track number
-		let parts = fileName.split(/^\d{1,4} - /);
+		let parts = item.split(/^\d{1,4} - /);
 		if (parts.length > 1) {
 			parts.shift();
 		}
@@ -22,8 +22,9 @@ export default function Track({ num, total, item }) {
 		return title;
 	}
 
-	const isCurrent = (mp3) => {
-		if (appState.isCurrent === mp3) {
+	const isCurrent = () => {
+		// could return a false positive if another track exists with the exact same number+name
+		if (appState.currentTrack.indexOf(item) > -1) {
 			return ' is-current';
 		}
 
@@ -31,6 +32,6 @@ export default function Track({ num, total, item }) {
 	}
 
 	return (
-		<div className={`track${isCurrent(item)}`}>{getNum()}. {getTitle(item)}</div>
+		<div className={`track${isCurrent()}`}><span className="num">{getNum()}.</span> {getTitle()}</div>
 	);
 }

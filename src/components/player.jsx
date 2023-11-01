@@ -163,8 +163,7 @@ export default function Player({ playlist }) {
 	const playAudio = (path) => {
 		getMeta(path).then((response) => {
 			setSong(response);
-			updateAppState({ currentTrack: response.mp3 });
-			console.log('song', path);
+			updateAppState({ currentTrack: path });
 		});
 	}
 
@@ -185,10 +184,6 @@ export default function Player({ playlist }) {
 				return;
 			}
 
-			// if (!song.image) {
-			// 	song.image = '/img/mp3.svg';
-			// }
-
 			if (!listenersAdded) {
 				setListenersAdded(true);
 				player.current.addEventListener('play', handlePlay);
@@ -203,11 +198,6 @@ export default function Player({ playlist }) {
 					title: song.title,
 					artist: song.artist,
 					album: song.album,
-					// artwork: [{
-					//     src: song.image,
-					//     sizes: '256x256',
-					//     type: 'image/jpg'
-					// }],
 					artwork: [
 						getArtwork(96),
 						getArtwork(128),
@@ -217,8 +207,6 @@ export default function Player({ playlist }) {
 						getArtwork(512)
 					]
 				};
-
-				console.log(metaData);
 
 				navigator.mediaSession.metadata = new MediaMetadata(metaData);
 

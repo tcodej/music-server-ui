@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300&family=Sono:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&family=Sono:wght@200&display=swap');
 
 @import '_reset.scss';
 @import '_vars.scss';
@@ -45,8 +45,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  color: $l-gray;
-  cursor: pointer;
   font-size: 18px;
 }
 
@@ -107,7 +105,13 @@ header {
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+
+  h1 {
+    color: $l-gray;
+    font-size: 18px;
+    padding-right: 15px;
+  }
 
   a {
     text-decoration: none;
@@ -115,9 +119,7 @@ header {
 }
 
 .btn-menu {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 50px;
   height: 50px;
   cursor: pointer;
@@ -350,6 +352,7 @@ audio {
   overflow-y: auto;
   padding: 20px 20px 70px 20px;
   transition: margin-left 150ms ease-out;
+  text-align: center;
 
   &.is-open {
     margin-left: 300px;
@@ -372,6 +375,20 @@ audio {
   .meta {
     margin-top: 10px;
     text-align: center;
+    font-size: 18px;
+  }
+
+  .album-name {
+    font-weight: $reg;
+  }
+
+  .artist-name {
+    color: $blue;
+    font-weight: $light;
+  }
+
+  .small {
+    font-size: 12px;
   }
 }
 
@@ -431,14 +448,16 @@ audio {
 }
 
 .track-list {
-  margin-top: 20px;
+  margin: 20px auto;
+  max-width: 700px;
+  text-align: left;
 }
 
 .track {
   font-family: $font-mono;
   border-bottom: 1px solid $m-gray;
   color: $white;
-  padding: 10px 0;
+  padding: 10px;
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: 2px center;
@@ -479,6 +498,7 @@ audio {
 .album-list {
   @extend .flex;
   max-width: $bp-xlarge;
+  margin: 0 auto;
 }
 
 .album {
@@ -628,12 +648,12 @@ $time: 150ms;
     }
 
     .controls {
-      width: 90px;
-      padding-right: 10px;
+      width: 120px;
+      // padding-right: 10px;
 
-      button {
-        width: 40px;
-      }
+      // button {
+      //   width: 40px;
+      // }
 
       .playpause {
         background-size: 30px;

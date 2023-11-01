@@ -28,18 +28,25 @@ export default function MetaData({ data }) {
 					<Cover meta={meta} />
 
 					<div className="meta">
-						{ meta.artist &&
-							<div>{meta.artist}</div>
-						}
 						{ meta.album &&
-							<div>{meta.album}</div>
+							<div className="album-name">{meta.album}</div>
 						}
-						{ meta.year &&
-							<div>{meta.year}</div>
+						{ meta.artist &&
+							<div className="artist-name">{meta.artist}</div>
 						}
-						{ meta.genre &&
-							<div>{meta.genre.join('/')}</div>
-						}
+						{ meta.year && meta.genre ? (
+							<div className="small">{meta.genre.join('/')} - {meta.year}</div>
+
+						) : (
+							<Fragment>
+								{ meta.year &&
+									<div className="small">{meta.year}</div>
+								}
+								{ meta.genre &&
+									<div className="small">{meta.genre.join('/')}</div>
+								}
+							</Fragment>
+						)}
 					</div>
 				</div>
 			}
