@@ -12,9 +12,9 @@ export default function MetaData({ data }) {
 			// 	data.image = '/img/mp3.svg';
 			// }
 
-			if (data.artist) {
-				updateAppState({ header: data.artist });
-			}
+			// if (data.artist) {
+			// 	updateAppState({ currentArtist: data.artist });
+			// }
 
 			setMeta(data);
 		}

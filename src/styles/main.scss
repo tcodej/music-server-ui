@@ -414,6 +414,7 @@ audio {
   }
 
   a {
+    display: block;
     text-decoration: none;
   }
 
@@ -424,7 +425,12 @@ audio {
 
     li {
       padding: 4px 10px;
+
+      &.is-current {
+        color: $blue;
+      }
     }
+
   }
 }
 

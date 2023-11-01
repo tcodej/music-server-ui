@@ -49,6 +49,7 @@ export default function Browser() {
 		setMeta();
 		setPrevList();
 		setList();
+		updateAppState({ currentArtist: '' });
 	}
 
 	const loadArtist = (path) => {
@@ -63,7 +64,7 @@ export default function Browser() {
 			if (response.ok) {
 				setList(response);
 				updateAppState({
-					header: path,
+					currentArtist: path,
 					playerState: 'min'
 				});
 			}
@@ -136,82 +137,87 @@ export default function Browser() {
 		}
 	});
 
+	const isCurrent = (item) => {
+		if (appState.currentArtist === item) {
+			return { className: 'is-current' };
+		}
+
+		return false;
+	}
+
 	return (
 		<div id="page-home">
-
-				<div id="music-browser" {...swipeHandlers}>
-					<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
-						{ artistGroups &&
-							<Fragment>
-								<div id="artist-filter">
-									<input type="text" id="field-filter" value={filter} maxLength="30" onChange={doFilter} placeholder="Find in Artists" />
-									{ filter &&	<button type="button" className="btn-clear" onClick={clearFilter}>Clear</button> }
-								</div>
-								<div id="artist-list">
-									{
-										artistGroups.map((group) => {
-											return (
-												<div className="artist-group" key={group.letter}>
-													<h4>{group.letter}</h4>
-													<ul>
-														{
-															group.items.map((item) => {
-																return <li key={item}><Link to={`/${item}`}>{item}</Link></li>
-															})
-														}
-													</ul>
-												</div>
-											)
-										})
-									}
-								</div>
-							</Fragment>
-						}
-					</div>
-
-					<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
-						{ (list && list.path) &&
-							<Breadcrumbs path={list.path} />
-						}
-
-						{ meta &&
-							<MetaData data={meta} />
-						}
-
-						{ (list && list.folders.length > 0) &&
-							<div className="album-list">
-								{ list.folders.map((item) => {
-									return <AlbumFolder key={item} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
-								})}
+			<div id="music-browser" {...swipeHandlers}>
+				<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
+					{ artistGroups &&
+						<Fragment>
+							<div id="artist-filter">
+								<input type="text" id="field-filter" value={filter} maxLength="30" onChange={doFilter} placeholder="Find in Artists" />
+								{ filter &&	<button type="button" className="btn-clear" onClick={clearFilter}>Clear</button> }
 							</div>
-						}
-
-						{ (list && list.files.length > 0) &&
-							<ul className="track-list">
-								{ list.files.map((item, index) => {
-									return <li key={item} onClick={() => { loadPlaylist(index) }}><Track num={index+1} total={list.files.length} item={item} /></li>
-								})}
-							</ul>
-						}
-
-						{ (prevList && prevList.folders.length > 0) &&
-							<div id="more-from">
-								<h3>More from this artist</h3>
-								<div className="album-list">
-									{ prevList.folders.map((item) => {
-										return <AlbumFolder key={item} item={item} parent={prevList.path} onClick={() => { loadList(prevList.path +'/'+ item, true) }} />
-									})}
-								</div>
+							<div id="artist-list">
+								{
+									artistGroups.map((group) => {
+										return (
+											<div className="artist-group" key={group.letter}>
+												<h4>{group.letter}</h4>
+												<ul>
+													{
+														group.items.map((item) => {
+															return <li key={item} {...isCurrent(item)}><Link to={`/${item}`}>{item}</Link></li>
+														})
+													}
+												</ul>
+											</div>
+										)
+									})
+								}
 							</div>
-						}
-					</div>
-
-					{ playlist &&
-						<Player playlist={playlist} />
+						</Fragment>
 					}
 				</div>
 
+				<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
+					{ (list && list.path) &&
+						<Breadcrumbs path={list.path} />
+					}
 
+					{ meta &&
+						<MetaData data={meta} />
+					}
+
+					{ (list && list.folders.length > 0) &&
+						<div className="album-list">
+							{ list.folders.map((item) => {
+								return <AlbumFolder key={item} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
+							})}
+						</div>
+					}
+
+					{ (list && list.files.length > 0) &&
+						<ul className="track-list">
+							{ list.files.map((item, index) => {
+								return <li key={item} onClick={() => { loadPlaylist(index) }}><Track num={index+1} total={list.files.length} item={item} /></li>
+							})}
+						</ul>
+					}
+
+					{ (prevList && prevList.folders.length > 0) &&
+						<div id="more-from">
+							<h3>More from this artist</h3>
+							<div className="album-list">
+								{ prevList.folders.map((item) => {
+									return <AlbumFolder key={item} item={item} parent={prevList.path} onClick={() => { loadList(prevList.path +'/'+ item, true) }} />
+								})}
+							</div>
+						</div>
+					}
+				</div>
+
+				{ playlist &&
+					<Player playlist={playlist} />
+				}
+			</div>
 		</div>
 	);
 }

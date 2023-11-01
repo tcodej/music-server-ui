@@ -4,10 +4,11 @@ const ApplicationContext = createContext(null);
 
 const ApplicationProvider = ({ children }) => {
     const defaultState = {
-        header: 'Music Server',
         menuOpen: true,
         // open|min|null
         playerState: null,
+        // used to determine which artist to highlight when selected
+        currentArtist: '',
         // used to determine which track to highlight when playing
         currentTrack: ''
     };
