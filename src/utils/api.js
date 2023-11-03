@@ -24,11 +24,7 @@ const getResult = async (endpoint, postData) => {
 		return result;
 
 	} catch(err) {
-		return {
-			ok: false,
-			message: 'API call failed.',
-			result: []
-		}
+		// console.log(err);
 	}
 }
 

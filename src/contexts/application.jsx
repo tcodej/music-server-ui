@@ -10,7 +10,8 @@ const ApplicationProvider = ({ children }) => {
         // used to determine which artist to highlight when selected
         currentArtist: '',
         // used to determine which track to highlight when playing
-        currentTrack: ''
+        currentTrack: '',
+        error: false
     };
 
     const [ appState, setAppState ] = useState(defaultState);

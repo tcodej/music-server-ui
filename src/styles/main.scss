@@ -86,10 +86,6 @@ h5 {
   text-transform: none;
 }
 
-h6 {
-
-}
-
 img {
   display: block;
 }
@@ -185,10 +181,6 @@ a {
   gap: 20px;
 }
 
-footer {
-  // padding-top: 100px;
-}
-
 button {
   @extend .no-select;
   position: relative;
@@ -213,10 +205,6 @@ strong {
 audio {
   width: 100%;
 }
-
-// p, li, a, pre, code {
-//   line-height: 24px;
-// }
 
 #container { 
   margin-top: 50px;
@@ -655,11 +643,6 @@ $time: 150ms;
 
     .controls {
       width: 120px;
-      // padding-right: 10px;
-
-      // button {
-      //   width: 40px;
-      // }
 
       .playpause {
         background-size: 30px;
@@ -670,4 +653,18 @@ $time: 150ms;
       display: none;
     }
   }
+}
+
+#error-message {
+  @extend .center;
+  color: $white;
+  width: 300px;
+  background-color: $blue;
+  padding: 30px;
+  box-shadow: 0 10px 12px -6px #000000, 0 -6px 6px 0 $shadow;
+}
+
+.button {
+  @extend .no-select;
+  cursor: pointer;
 }

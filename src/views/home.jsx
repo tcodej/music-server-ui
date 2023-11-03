@@ -10,6 +10,7 @@ import MetaData from '../components/metaData';
 import Breadcrumbs from '../components/breadcrumbs';
 import AlbumFolder from '../components/albumFolder';
 import Player from '../components/player';
+import ErrorMessage from '../components/errorMessage';
 
 export default function Browser() {
 	const params = useParams();
@@ -27,9 +28,14 @@ export default function Browser() {
 	useEffect(() => {
 		if (!loaded) {
 			browse().then((response) => {
-				setLoaded(true);
-				setArtists(response.folders);
-				setArtistGroups(alphaGroup(response.folders));
+				if (response && response.ok) {
+					setLoaded(true);
+					setArtists(response.folders);
+					setArtistGroups(alphaGroup(response.folders));
+
+				} else {
+					updateAppState({ error: 'Sorry, there has been an error. Failed to load artists.'});
+				}
 			});
 		}
 
@@ -49,7 +55,7 @@ export default function Browser() {
 		setMeta();
 		setPrevList();
 		setList();
-		updateAppState({ currentArtist: '' });
+		updateAppState({ currentArtist: '', error: false });
 	}
 
 	const loadArtist = (path) => {
@@ -61,12 +67,15 @@ export default function Browser() {
 		}
 
 		browse(path).then((response) => {
-			if (response.ok) {
+			if (response && response.ok) {
 				setList(response);
 				updateAppState({
 					currentArtist: path,
 					playerState: 'min'
 				});
+
+			} else {
+				updateAppState({ error: 'Sorry, there has been an error. Failed to load '+ path +'.'});
 			}
 		});
 	}
@@ -218,6 +227,7 @@ export default function Browser() {
 					<Player playlist={playlist} />
 				}
 			</div>
+			<ErrorMessage />
 		</div>
 	);
 }
