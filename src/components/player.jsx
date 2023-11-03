@@ -3,6 +3,7 @@ import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import { getMeta } from '../utils/api';
 import { formatTime } from '../utils';
+import Slider from './slider';
 import Cover from './cover';
 import mp3Icon from '../assets/img/icon-mp3.svg';
 
@@ -14,7 +15,8 @@ export default function Player({ playlist }) {
 		playing: false,
 		duration: 0,
 		currentTime: 0,
-		percent: 0
+		remainingTime: 0,
+		volume: 0.05
 	});
 
 	const player = useRef(null);
@@ -70,7 +72,7 @@ export default function Player({ playlist }) {
 
 	const handlePlay = () => {
 		// temporary
-		// player.current.volume = 0.1;
+		player.current.volume = state.volume;
 	}
 
 	const handleCanPlay = () => {
@@ -82,7 +84,7 @@ export default function Player({ playlist }) {
 		const playerDuration = parseInt(getDuration(), 10);
 
 		updateState({
-			duration: formatTime(playerDuration)
+			duration: playerDuration
 		});
 	}
 
@@ -114,15 +116,21 @@ export default function Player({ playlist }) {
 			player.current.currentTime = progress;
 		}
 
-		let percent = (player.current.currentTime / player.current.duration) * 100;
-
-		if (isNaN(percent)) {
-			percent = 0;
-		}
+		const remainingTime = getDuration() - progress;
 
 		updateState({
-			percent: percent
+			progress: progress,
+			remainingTime: `-${formatTime(remainingTime)}`
 		});
+	}
+
+	const setVolume = (value) => {
+		if (Array.isArray(value)) {
+			value = value[0];
+		}
+
+		player.current.volume = value;
+		updateState({ volume: player.current.volume });
 	}
 
 	const handleEnded = () => {
@@ -167,8 +175,14 @@ export default function Player({ playlist }) {
 		});
 	}
 
-	const seek = () => {
-		//
+	const seek = (value) => {
+		if (Array.isArray(value)) {
+			value = value[0];
+		}
+
+		if (state.playing) {
+			player.current.currentTime = value;
+		}
 	}
 
 	useEffect(() => {
@@ -236,7 +250,7 @@ export default function Player({ playlist }) {
 			}
 		}
 	// eslint-disable-next-line
- 	}, [song]);
+	}, [song]);
 
 	return (
 		<div id="player-panel" className={appState.playerState} {...swipeHandlers}>
@@ -248,18 +262,35 @@ export default function Player({ playlist }) {
 						{ song.artist && <div className="artist">{song.artist}</div> }
 					</div>
 					<div className="time">
-						<div className="progress">
-							<div className="bar" style={{ width: `${state.percent}%` }}></div>
-						</div>
+						<Slider
+							min={0}
+							max={state.duration}
+							step={0.001}
+							value={[state.progress]}
+							onValueChange={updateProgress}
+							onValueCommit={seek}
+						/>
 						<div className="minutes">
 							<div className="current">{state.currentTime}</div>
-							<div className="duration">{state.duration}</div>
+							<div className="duration">{state.remainingTime}</div>
 						</div>
 					</div>
 					<div className="controls">
 						<button type="button" className="prev" onClick={prevTrack}>Prev</button>
 						<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
 						<button type="button" className="next" onClick={nextTrack}>Next</button>
+					</div>
+					<div className="volume">
+						<div className="icon min">Min</div>
+						<Slider
+							monochrome="true"
+							min={0}
+							max={1}
+							step={0.001}
+							value={[state.volume]}
+							onValueChange={setVolume}
+						/>
+						<div className="icon max">Max</div>
 					</div>
 				</Fragment>
 			}

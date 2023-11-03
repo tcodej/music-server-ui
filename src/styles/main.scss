@@ -3,6 +3,7 @@
 @import '_reset.scss';
 @import '_vars.scss';
 @import 'loading.scss';
+@import 'slider.scss';
 
 html, body {
   position: relative;
@@ -540,7 +541,7 @@ $time: 150ms;
     width: 100%;
   }
 
-  .song-info, .cover, .time {
+  .song-info, .cover {
     margin-bottom: 20px;
   }
 
@@ -552,7 +553,7 @@ $time: 150ms;
     text-align: center;
   }
 
-  .time, .minutes {
+  .time, .minutes, .volume {
     width: 100%;
   }
 
@@ -560,25 +561,33 @@ $time: 150ms;
     font-family: $font-mono;
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
   }
 
-  .progress {
-    position: relative;
-    width: 100%;
-    height: 5px;
-    background-color: $m-gray;
-    overflow: hidden;
-    border-radius: 5px;
+  .volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
 
-    .bar {
-      background-color: $blue;
-      width: 50%;
-      height: 100%;
+    .icon {
+      @extend .no-text;
+      width: 15px;
+      height: 15px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      &.min {
+        background-image: url('../assets/img/icon-volmin.svg');
+      }
+
+      &.max {
+        background-image: url('../assets/img/icon-volmax.svg');
+      }
     }
   }
 
-  .song-info, .time, .controls {
+  .song-info, .time, .volume, .controls {
     max-width: 300px;
   }
 
@@ -650,7 +659,7 @@ $time: 150ms;
       }
     }
 
-    .artist, .prev, .time {
+    .artist, .prev, .volume, .time {
       display: none;
     }
   }

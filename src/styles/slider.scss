@@ -1,0 +1,57 @@
+.SliderRoot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+
+  &.monochrome {
+    .SliderRange, .SliderThumb {
+      background-color: $gray;
+    }
+  }
+}
+
+.SliderRoot[data-orientation='vertical'] {
+  flex-direction: column;
+  width: 20px;
+  height: 100px;
+}
+
+.SliderTrack {
+  background-color: $m-gray;
+  position: relative;
+  flex-grow: 1;
+  border-radius: 9999px;
+  height: 3px;
+}
+
+.SliderTrack[data-orientation='vertical'] {
+  width: 3px;
+}
+
+.SliderRange {
+  position: absolute;
+  background-color: $blue;
+  border-radius: 9999px;
+  height: 100%;
+}
+
+.SliderRange[data-orientation='vertical'] {
+  width: 100%;
+}
+
+.SliderThumb {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: $blue;
+  border-radius: 10px;
+
+  &:focus {
+    outline: none;
+  }
+}
