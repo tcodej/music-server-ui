@@ -8,14 +8,6 @@ export default function MetaData({ data }) {
 
 	useEffect(() => {
 		if (data) {
-			// if (!data.image) {
-			// 	data.image = '/img/mp3.svg';
-			// }
-
-			// if (data.artist) {
-			// 	updateAppState({ currentArtist: data.artist });
-			// }
-
 			setMeta(data);
 		}
 	// eslint-disable-next-line

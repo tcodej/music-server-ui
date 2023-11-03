@@ -100,6 +100,9 @@ export default function Browser() {
 
 			if (response.meta) {
 				setMeta(response.meta);
+
+			} else {
+				setMeta();
 			}
 		});
 	}
@@ -193,6 +196,24 @@ export default function Browser() {
 
 					{ meta &&
 						<MetaData data={meta} />
+					}
+
+					{ (list && !list.files.length && !list.folders.length) &&
+						<Fragment>
+							<h4>This folder doesn't contain any valid music files.</h4>
+							{ (list.unsupported.length > 0) &&
+								<Fragment>
+									<p>(But there are unsupported files)</p>
+									<ul>
+									{ list.unsupported.map((item, index) => {
+										return <li key={item}>{item}</li>
+									})}
+									</ul>
+								</Fragment>
+							}
+						</Fragment>
+
+
 					}
 
 					{ (list && list.folders.length > 0) &&
