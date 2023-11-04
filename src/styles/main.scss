@@ -450,6 +450,7 @@ audio {
 }
 
 .track {
+  position: relative;
   font-family: $font-mono;
   border-bottom: 1px solid $m-gray;
   color: $white;
@@ -465,6 +466,7 @@ audio {
 
   &.is-current {
     background-color: $blue;
+    padding-right: 26px;
   }
 }
 

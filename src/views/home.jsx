@@ -190,9 +190,9 @@ export default function Browser() {
 				</div>
 
 				<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
-					{ (list && list.path) &&
+					{/* (list && list.path) &&
 						<Breadcrumbs path={list.path} />
-					}
+					*/}
 
 					{ meta &&
 						<MetaData data={meta} />

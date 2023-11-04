@@ -1,4 +1,5 @@
 import { useAppContext } from '../contexts/application';
+import FakeAnim from './fakeAnim';
 
 export default function Track({ num, total, item }) {
 	const { appState } = useAppContext();
@@ -8,10 +9,12 @@ export default function Track({ num, total, item }) {
 		return num.toString().padStart(total.toString().length, '0');
 	}
 
-	// return song title based on filename i.e. 03 - The Song Name (remix).mp3
+	// return song title without track number based on filename i.e.
+	// 03 - The Song Name.mp3 (preferred) or 03. The Song Name.mp3
 	const getTitle = () => {
 		// drop the track number
-		let parts = item.split(/^\d{1,4} - /);
+		let parts = item.split(/^\d{1,4} - |\d{1,4}. /);
+
 		if (parts.length > 1) {
 			parts.shift();
 		}
@@ -31,7 +34,13 @@ export default function Track({ num, total, item }) {
 		return '';
 	}
 
+	const getAnim = () => {
+		if (isCurrent()) {
+			return <FakeAnim />
+		}
+	}
+
 	return (
-		<div className={`track${isCurrent()}`}><span className="num">{getNum()}.</span> {getTitle()}</div>
+		<div className={`track${isCurrent()}`}><span className="num">{getNum()}.</span> {getTitle()}{getAnim()}</div>
 	);
 }
