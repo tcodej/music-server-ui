@@ -2,12 +2,12 @@ import { Fragment, useEffect, useState, useRef } from 'react';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import { getMeta } from '../utils/api';
-import { formatTime } from '../utils';
+import { formatTime, getMobileOS } from '../utils';
 import Slider from './slider';
 import Cover from './cover';
 import mp3Icon from '../assets/img/icon-mp3.svg';
 
-export default function Player({ playlist }) {
+export default function Player({ playlist, loadList }) {
 	const { appState, updateAppState } = useAppContext();
 	const [ listenersAdded, setListenersAdded ] = useState(false);
 	const [ song, setSong ] = useState(false);
@@ -34,7 +34,6 @@ export default function Player({ playlist }) {
 		const newIndex = playlist.index + dir;
 
 		if (newIndex < 0 || newIndex > playlist.songs.length - 1) {
-			console.log('end of playlist', playlist);
 			stop();
 			setSong(false);
 			updateAppState({
@@ -135,6 +134,15 @@ export default function Player({ playlist }) {
 		});
 	}
 
+	// ios devices do not allow volume control
+	const volumeAllowed = () => {
+		if (getMobileOS()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	const setVolume = (value) => {
 		if (Array.isArray(value)) {
 			value = value[0];
@@ -195,6 +203,19 @@ export default function Player({ playlist }) {
 		}
 	}
 
+	// load album page for this song or maximize if minimized
+	const loadAlbum = () => {
+		if (typeof loadList === 'function') {
+			if (appState.playerState === 'min') {
+				updateAppState({ playerState: 'open' });
+				return;
+			}
+
+			loadList(playlist.path);
+			updateAppState({ playerState: 'min' });
+		}
+	}
+
 	useEffect(() => {
 		playAudio(playlist.index);
 	}, [playlist]);
@@ -251,11 +272,13 @@ export default function Player({ playlist }) {
 		}
 
 		return () => {
-			player.current.removeEventListener('play', handlePlay);
-			player.current.removeEventListener('canplay', handleCanPlay);
-			player.current.removeEventListener('durationchange', handleDurationChange);
-			player.current.removeEventListener('timeupdate', handleTimeUpdate);
-			player.current.removeEventListener('ended', handleEnded);
+			if (player && player.current) {
+				player.current.removeEventListener('play', handlePlay);
+				player.current.removeEventListener('canplay', handleCanPlay);
+				player.current.removeEventListener('durationchange', handleDurationChange);
+				player.current.removeEventListener('timeupdate', handleTimeUpdate);
+				player.current.removeEventListener('ended', handleEnded);
+			}
 		}
 	// eslint-disable-next-line
 	}, [song]);
@@ -264,7 +287,7 @@ export default function Player({ playlist }) {
 		<div id="player-panel" className={appState.playerState} {...swipeHandlers}>
 			{ song &&
 				<Fragment>
-					<div className="song-info" onClick={() => updateAppState({ playerState: 'open' })}>
+					<div className="song-info" onClick={loadAlbum}>
 						<Cover meta={song} />
 						{ song.title &&	<div className="title">{song.title}</div> }
 						{ song.artist && <div className="artist">{song.artist}</div> }
@@ -288,18 +311,20 @@ export default function Player({ playlist }) {
 						<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
 						<button type="button" className="next" onClick={nextTrack}>Next</button>
 					</div>
-					<div className="volume">
-						<div className="icon min">Min</div>
-						<Slider
-							monochrome="true"
-							min={0}
-							max={1}
-							step={0.001}
-							value={[state.volume]}
-							onValueChange={setVolume}
-						/>
-						<div className="icon max">Max</div>
-					</div>
+					{ volumeAllowed() &&
+						<div className="volume">
+							<div className="icon min">Min</div>
+							<Slider
+								monochrome="true"
+								min={0}
+								max={1}
+								step={0.001}
+								value={[state.volume]}
+								onValueChange={setVolume}
+							/>
+							<div className="icon max">Max</div>
+						</div>
+					}
 				</Fragment>
 			}
 

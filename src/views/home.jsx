@@ -227,7 +227,7 @@ export default function Browser() {
 				</div>
 
 				{ playlist &&
-					<Player playlist={playlist} />
+					<Player playlist={playlist} loadList={loadList} />
 				}
 			</div>
 			<ErrorMessage />
