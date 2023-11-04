@@ -20,7 +20,6 @@ export default function Browser() {
 	const [artists, setArtists] = useState();
 	const [artistGroups, setArtistGroups] = useState();
 	const [list, setList] = useState();
-	const [prevList, setPrevList] = useState();
 	const [meta, setMeta] = useState();
 	const [playlist, setPlaylist] = useState(false);
 	const [filter, setFilter] = useState('');
@@ -53,7 +52,6 @@ export default function Browser() {
 
 	const reset = () => {
 		setMeta();
-		setPrevList();
 		setList();
 		updateAppState({ currentArtist: '', error: false });
 	}
@@ -70,6 +68,7 @@ export default function Browser() {
 			if (response && response.ok) {
 				setList(response);
 				updateAppState({
+					playerState: 'min',
 					currentArtist: path
 				});
 
@@ -79,11 +78,7 @@ export default function Browser() {
 		});
 	}
 
-	const loadList = (path, skipList) => {
-		if (!skipList && list) {
-			setPrevList(list);
-		}
-
+	const loadList = (path) => {
 		browse(path).then((response) => {
 			appAction.toggleMenu(false);
 
@@ -175,8 +170,8 @@ export default function Browser() {
 												<h4>{group.letter}</h4>
 												<ul>
 													{
-														group.items.map((item) => {
-															return <li key={item} {...isCurrent(item)}><Link to={`/${item}`}>{item}</Link></li>
+														group.items.map((item, index) => {
+															return <li key={item+index} {...isCurrent(item)}><Link to={`/${item}`}>{item}</Link></li>
 														})
 													}
 												</ul>
@@ -191,7 +186,7 @@ export default function Browser() {
 
 				<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
 					{ (list && list.path) &&
-						<Breadcrumbs path={list.path} />
+						<Breadcrumbs path={list.path} loadList={loadList} />
 					}
 
 					{ meta &&
@@ -206,20 +201,18 @@ export default function Browser() {
 									<p>(But there are unsupported files)</p>
 									<ul>
 									{ list.unsupported.map((item, index) => {
-										return <li key={item}>{item}</li>
+										return <li key={item+index}>{item}</li>
 									})}
 									</ul>
 								</Fragment>
 							}
 						</Fragment>
-
-
 					}
 
 					{ (list && list.folders.length > 0) &&
 						<div className="album-list">
-							{ list.folders.map((item) => {
-								return <AlbumFolder key={item} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
+							{ list.folders.map((item, index) => {
+								return <AlbumFolder key={item+index} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
 							})}
 						</div>
 					}
@@ -227,20 +220,9 @@ export default function Browser() {
 					{ (list && list.files.length > 0) &&
 						<ul className="track-list">
 							{ list.files.map((item, index) => {
-								return <li key={item} onClick={() => { loadPlaylist(index) }}><Track num={index+1} total={list.files.length} item={item} /></li>
+								return <li key={item+index} onClick={() => { loadPlaylist(index) }}><Track num={index+1} total={list.files.length} item={item} /></li>
 							})}
 						</ul>
-					}
-
-					{ (prevList && prevList.folders.length > 0) &&
-						<div id="more-from">
-							<h3>More from this artist</h3>
-							<div className="album-list">
-								{ prevList.folders.map((item) => {
-									return <AlbumFolder key={item} item={item} parent={prevList.path} onClick={() => { loadList(prevList.path +'/'+ item, true) }} />
-								})}
-							</div>
-						</div>
 					}
 				</div>
 
