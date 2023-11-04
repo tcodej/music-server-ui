@@ -30,13 +30,24 @@ export default function Player({ playlist }) {
 		});
 	}
 
-	const updateIndex = (newIndex) => {
+	const updateIndex = (dir) => {
+		const newIndex = playlist.index + dir;
+
 		if (newIndex < 0 || newIndex > playlist.songs.length - 1) {
-			return
+			console.log('end of playlist', playlist);
+			stop();
+			setSong(false);
+			updateAppState({
+				currentArtist: '',
+				currentTrack: '',
+				playerState: null
+			});
+
+			return;
 		}
 
 		playlist.index = newIndex;
-		playAudio(playlist.path +'/'+ playlist.songs[playlist.index]);
+		playAudio(newIndex);
 	}
 
 	const swipeHandlers = useSwipeable({
@@ -134,18 +145,15 @@ export default function Player({ playlist }) {
 	}
 
 	const handleEnded = () => {
-		console.log('ended', playlist.index);
 		nextTrack();
 	}
 
 	const nextTrack = () => {
-		console.log('next track');
-		updateIndex(playlist.index + 1);
+		updateIndex(1);
 	}
 
 	const prevTrack = () => {
-		console.log('prev track');
-		updateIndex(playlist.index - 1);
+		updateIndex(-1);
 	}
 
 	const getDuration = () => {
@@ -168,7 +176,9 @@ export default function Player({ playlist }) {
 		}
 	}
 
-	const playAudio = (path) => {
+	const playAudio = (index) => {
+		const path = playlist.path +'/'+ playlist.songs[index];
+
 		getMeta(path).then((response) => {
 			setSong(response);
 			updateAppState({ currentTrack: path });
@@ -186,26 +196,16 @@ export default function Player({ playlist }) {
 	}
 
 	useEffect(() => {
-		// console.log('playlist', playlist);
-		if (playlist.songs[playlist.index]) {
-			playAudio(playlist.path +'/'+ playlist.songs[playlist.index]);
-		}
+		playAudio(playlist.index);
 	}, [playlist]);
 
 	useEffect(() => {
-		if (song) {
-			if (!song.mp3) {
-				return;
-			}
-
-			if (!listenersAdded) {
-				setListenersAdded(true);
-				player.current.addEventListener('play', handlePlay);
-				player.current.addEventListener('canplay', handleCanPlay);
-				player.current.addEventListener('durationchange', handleDurationChange);
-				player.current.addEventListener('timeupdate', handleTimeUpdate);
-				player.current.addEventListener('ended', handleEnded);
-			}
+		if (song && song.mp3) {
+			player.current.addEventListener('play', handlePlay);
+			player.current.addEventListener('canplay', handleCanPlay);
+			player.current.addEventListener('durationchange', handleDurationChange);
+			player.current.addEventListener('timeupdate', handleTimeUpdate);
+			player.current.addEventListener('ended', handleEnded);
 
 			if ('mediaSession' in navigator) {
 				const metaData = {
@@ -248,6 +248,14 @@ export default function Player({ playlist }) {
 					seek(e.seekTime);
 				});
 			}
+		}
+
+		return () => {
+			player.current.removeEventListener('play', handlePlay);
+			player.current.removeEventListener('canplay', handleCanPlay);
+			player.current.removeEventListener('durationchange', handleDurationChange);
+			player.current.removeEventListener('timeupdate', handleTimeUpdate);
+			player.current.removeEventListener('ended', handleEnded);
 		}
 	// eslint-disable-next-line
 	}, [song]);

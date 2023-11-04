@@ -70,8 +70,7 @@ export default function Browser() {
 			if (response && response.ok) {
 				setList(response);
 				updateAppState({
-					currentArtist: path,
-					playerState: 'min'
+					currentArtist: path
 				});
 
 			} else {
@@ -113,6 +112,7 @@ export default function Browser() {
 
 	const loadPlaylist = (index) => {
 		setPlaylist({ path: list.path, songs: list.files, index: index });
+		updateAppState({ playerState: 'min' });
 	}
 
 	const doFilter = (e) => {
@@ -190,9 +190,9 @@ export default function Browser() {
 				</div>
 
 				<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
-					{/* (list && list.path) &&
+					{ (list && list.path) &&
 						<Breadcrumbs path={list.path} />
-					*/}
+					}
 
 					{ meta &&
 						<MetaData data={meta} />

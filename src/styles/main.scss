@@ -523,7 +523,7 @@ $time: 150ms;
 
 #player-panel {
   @extend .no-select;
-  display: flex;
+  display: none;
   align-items: center;
   flex-direction: column;
   position: fixed;
@@ -623,6 +623,10 @@ $time: 150ms;
         background-image: url('../assets/img/control-next.svg');
       }
     }
+  }
+
+  &.min, &.open {
+    display: flex;
   }
 
   &.min {
