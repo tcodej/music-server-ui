@@ -111,12 +111,12 @@ export default function Player({ playlist, loadList }) {
 	}
 
 	const updateProgress = (value) => {
-		if (Array.isArray(value)) {
-			value = value[0];
-		}
-
 		if (player.current.seeking) {
 			return;
+		}
+
+		if (Array.isArray(value)) {
+			value = value[0];
 		}
 
 		let progress = player.current.currentTime;
@@ -292,39 +292,42 @@ export default function Player({ playlist, loadList }) {
 						{ song.title &&	<div className="title">{song.title}</div> }
 						{ song.artist && <div className="artist">{song.artist}</div> }
 					</div>
-					<div className="time">
-						<Slider
-							min={0}
-							max={state.duration}
-							step={0.001}
-							value={[state.progress]}
-							onValueChange={updateProgress}
-							onValueCommit={seek}
-						/>
-						<div className="minutes">
-							<div className="current">{state.currentTime}</div>
-							<div className="duration">{state.remainingTime}</div>
-						</div>
-					</div>
-					<div className="controls">
-						<button type="button" className="prev" onClick={prevTrack}>Prev</button>
-						<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
-						<button type="button" className="next" onClick={nextTrack}>Next</button>
-					</div>
-					{ volumeAllowed() &&
-						<div className="volume">
-							<div className="icon min">Min</div>
+					<div className="player-info">
+						<div className="time">
 							<Slider
-								monochrome="true"
 								min={0}
-								max={1}
+								max={state.duration}
 								step={0.001}
-								value={[state.volume]}
-								onValueChange={setVolume}
+								value={[state.progress]}
+								onValueChange={updateProgress}
+								onValueCommit={seek}
 							/>
-							<div className="icon max">Max</div>
+							<div className="minutes">
+								<div className="current">{state.currentTime}</div>
+								<div>{playlist.index+1}/{playlist.songs.length}</div>
+								<div className="duration">{state.remainingTime}</div>
+							</div>
 						</div>
-					}
+						<div className="controls">
+							<button type="button" className="prev" onClick={prevTrack}>Prev</button>
+							<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
+							<button type="button" className="next" onClick={nextTrack}>Next</button>
+						</div>
+						{ volumeAllowed() &&
+							<div className="volume">
+								<div className="icon min">Min</div>
+								<Slider
+									monochrome="true"
+									min={0}
+									max={1}
+									step={0.001}
+									value={[state.volume]}
+									onValueChange={setVolume}
+								/>
+								<div className="icon max">Max</div>
+							</div>
+						}
+					</div>
 				</Fragment>
 			}
 
