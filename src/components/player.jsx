@@ -205,14 +205,20 @@ export default function Player({ playlist, loadList }) {
 
 	// load album page for this song or maximize if minimized
 	const loadAlbum = () => {
-		if (typeof loadList === 'function') {
-			if (appState.playerState === 'min') {
-				updateAppState({ playerState: 'open' });
-				return;
-			}
+		if (appState.playerState === 'min') {
+			maximize();
+			return;
+		}
 
+		if (typeof loadList === 'function') {
 			loadList(playlist.path);
 			updateAppState({ playerState: 'min' });
+		}
+	}
+
+	const maximize = () => {
+		if (appState.playerState === 'min') {
+			updateAppState({ playerState: 'open' });
 		}
 	}
 
@@ -287,12 +293,13 @@ export default function Player({ playlist, loadList }) {
 		<div id="player-panel" className={appState.playerState} {...swipeHandlers}>
 			{ song &&
 				<Fragment>
-					<div className="song-info" onClick={loadAlbum}>
-						<Cover meta={song} />
-						{ song.title &&	<div className="title">{song.title}</div> }
-						{ song.artist && <div className="artist">{song.artist}</div> }
-					</div>
+					<Cover meta={song} onClick={loadAlbum} />
+
 					<div className="player-info">
+						<div className="song-info" onClick={maximize}>
+							{ song.title &&	<div className="title">{song.title}</div> }
+							{ song.artist && <div className="artist">{song.artist}</div> }
+						</div>
 						<div className="time">
 							<Slider
 								min={0}

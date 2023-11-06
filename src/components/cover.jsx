@@ -4,7 +4,7 @@ import folderIcon from '../assets/img/icon-folder.svg';
 import mp3Icon from '../assets/img/icon-mp3.svg';
 import Loading from './loading';
 
-export default function Cover({ meta }) {
+export default function Cover({ meta, onClick }) {
 	const [data, setData] = useState({
 		image: '',
 		alt: 'Loading...',
@@ -41,7 +41,11 @@ export default function Cover({ meta }) {
 	}, [meta]);
 
 	return (
-		<div className={`cover${data.className}`} style={{ backgroundImage: `url(${data.image})` }}>
+		<div
+			className={`cover${data.className}`}
+			style={{ backgroundImage: `url(${data.image})` }}
+			onClick={onClick}
+		>
 			<img src={square} alt={data.alt} draggable="false" />
 
 			{ !data.image &&

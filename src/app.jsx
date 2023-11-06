@@ -8,7 +8,6 @@ import { ApplicationProvider } from './contexts/application';
 import Passcode from './components/passcode';
 import Header from './components/header';
 import Home from './views/home';
-import Error404 from './views/error404';
 import './styles/main.scss';
 
 export default function App() {
@@ -36,7 +35,6 @@ export default function App() {
 						<Routes>
 							<Route path="/" element={<Home />} />
 							<Route path="/*" element={<Home />} />
-							<Route path="*" element={<Error404 />} />
 						</Routes>
 					</div>
 				</Fragment>

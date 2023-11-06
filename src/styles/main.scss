@@ -454,14 +454,15 @@ audio {
 .track {
   position: relative;
   font-family: $font-mono;
-  border-bottom: 1px solid $m-gray;
+  font-size: 18px;
   color: $white;
+  letter-spacing: -1px;
+  border-bottom: 1px solid $m-gray;
   padding: 10px;
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: 2px center;
   cursor: pointer;
-  font-size: 18px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -476,7 +477,7 @@ audio {
 .cover {
   position: relative;
   width: 100%;
-  max-width: 200px;
+  max-width: 250px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -549,6 +550,7 @@ audio {
   display: none;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -564,15 +566,19 @@ audio {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    text-align: center;
   }
 
   .song-info, .cover {
     margin-bottom: 20px;
-    text-align: center;
   }
 
   .cover {
     transition: width 150ms ease-out;
+  }
+
+  .title {
+    font-size: 18px;
   }
 
   .artist {
@@ -583,11 +589,16 @@ audio {
     width: 100%;
   }
 
+  .time {
+    margin-bottom: 10px;
+  }
+
   .player-info {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 300px;
   }
 
   .minutes {
@@ -618,10 +629,6 @@ audio {
         background-image: url('../assets/img/icon-volmax.svg');
       }
     }
-  }
-
-  .song-info, .time, .volume, .controls {
-    max-width: 300px;
   }
 
   .controls {
@@ -666,9 +673,8 @@ audio {
     justify-content: space-evenly;
     gap: 10px;
 
-    .player-info {
-      width: 100%;
-      max-width: 500px;
+    .cover {
+      margin: 0;
     }
   }
 
@@ -682,14 +688,22 @@ audio {
       margin: 0;
     }
 
-    .song-info {
+    .player-info {
       flex-direction: row;
       overflow: hidden;
       gap: 10px;
       max-width: 100%;
     }
 
+    .song-info {
+      flex-direction: row;
+      height: 62px;
+      text-align: left;
+      margin-left: 10px;
+    }
+
     .cover {
+      flex-shrink: 0;
       width: 62px;
     }
 
@@ -698,10 +712,6 @@ audio {
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: left;
-    }
-
-    .player-info {
-      width: auto;
     }
 
     .controls {
