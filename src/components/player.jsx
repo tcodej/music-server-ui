@@ -188,8 +188,13 @@ export default function Player({ playlist, loadList }) {
 		const path = playlist.path +'/'+ playlist.songs[index];
 
 		getMeta(path).then((response) => {
-			setSong(response);
-			updateAppState({ currentTrack: path });
+			if (response.ok) {
+				setSong(response);
+				updateAppState({ currentTrack: path });
+
+			} else {
+				updateAppState({ error: 'Sorry, there has been an error. Failed to load audio.'});
+			}
 		});
 	}
 
@@ -310,9 +315,9 @@ export default function Player({ playlist, loadList }) {
 								onValueCommit={seek}
 							/>
 							<div className="minutes">
-								<div className="current">{state.currentTime}</div>
-								<div>{playlist.index+1}/{playlist.songs.length}</div>
-								<div className="duration">{state.remainingTime}</div>
+								<div>{state.currentTime}</div>
+								<div className="track-count">{playlist.index+1}/{playlist.songs.length}</div>
+								<div>{state.remainingTime}</div>
 							</div>
 						</div>
 						<div className="controls">

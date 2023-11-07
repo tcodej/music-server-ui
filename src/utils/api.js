@@ -20,11 +20,14 @@ const getResult = async (endpoint, postData) => {
 		const response = await fetch(`${apiURL}${endpoint}`, data);
 		const result = await response.json();
 		result.ok = response.ok;
-		// console.log(result);
 		return result;
 
 	} catch(err) {
-		// console.log(err);
+		console.log(err);
+		return {
+			ok: false,
+			error: 'Server exception'
+		}
 	}
 }
 

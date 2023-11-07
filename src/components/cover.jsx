@@ -40,10 +40,16 @@ export default function Cover({ meta, onClick }) {
 		}
 	}, [meta]);
 
+	const bgStyle = () => {
+		// this fixes issues with perentheses in the url
+		const css = "url('"+ data.image +"')";
+		return { backgroundImage: css };
+	};
+
 	return (
 		<div
 			className={`cover${data.className}`}
-			style={{ backgroundImage: `url(${data.image})` }}
+			style={bgStyle()}
 			onClick={onClick}
 		>
 			<img src={square} alt={data.alt} draggable="false" />

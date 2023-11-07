@@ -394,6 +394,7 @@ audio {
 
   li {
     font-size: 20px;
+    font-weight: $light;
   }
 
   h4 {
@@ -498,6 +499,7 @@ audio {
   align-items: center;
   padding: 10px 20px;
   font-size: 18px;
+  font-weight: $reg;
 
   .back {
     cursor: pointer;
@@ -607,6 +609,10 @@ audio {
     justify-content: space-between;
   }
 
+  .track-count {
+    margin-right: -10px;
+  }
+
   .volume {
     display: flex;
     align-items: center;
@@ -700,6 +706,7 @@ audio {
       height: 62px;
       text-align: left;
       margin-left: 10px;
+      overflow: hidden;
     }
 
     .cover {
