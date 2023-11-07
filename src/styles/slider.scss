@@ -10,7 +10,7 @@
 
   &.monochrome {
     .SliderRange, .SliderThumb {
-      background-color: $gray;
+      background-color: $l-gray;
     }
   }
 }
@@ -22,7 +22,7 @@
 }
 
 .SliderTrack {
-  background-color: $m-gray;
+  background-color: $gray;
   position: relative;
   flex-grow: 1;
   border-radius: 9999px;
@@ -35,7 +35,7 @@
 
 .SliderRange {
   position: absolute;
-  background-color: $blue;
+  background-color: $white;
   border-radius: 9999px;
   height: 100%;
 }
@@ -48,7 +48,7 @@
   display: block;
   width: 8px;
   height: 8px;
-  background-color: $blue;
+  background-color: $white;
   border-radius: 10px;
 
   &:focus {

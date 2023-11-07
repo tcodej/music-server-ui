@@ -295,11 +295,14 @@ export default function Player({ playlist, loadList }) {
 	}, [song]);
 
 	return (
-		<div id="player-panel" className={appState.playerState} {...swipeHandlers}>
+		<div
+			id="player-panel"
+			className={appState.playerState}
+			{...swipeHandlers}
+		>
 			{ song &&
 				<Fragment>
 					<Cover meta={song} onClick={loadAlbum} />
-
 					<div className="player-info">
 						<div className="song-info" onClick={maximize}>
 							{ song.title &&	<div className="title">{song.title}</div> }
@@ -339,6 +342,9 @@ export default function Player({ playlist, loadList }) {
 								<div className="icon max">Max</div>
 							</div>
 						}
+					</div>
+					<div className="background-container">
+						<div className="background" style={{ backgroundImage: `url('${song.image}')` }} />
 					</div>
 				</Fragment>
 			}
