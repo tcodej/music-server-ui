@@ -31,7 +31,7 @@ $reg: 400;
 $med: 500;
 
 $header-height: 50px;
-$box-margin: 20;
+$box-margin: 20px;
 
 @mixin transform($transforms) {
 	-webkit-transform: $transforms;
@@ -41,7 +41,7 @@ $box-margin: 20;
 
 @mixin boxWidth($percent) {
   $margin: math.ceil($box-margin - ($box-margin * math.div($percent, 100)));
-  width: calc(#{$percent * 1%} - #{$margin}px);
+  width: calc(#{$percent * 1%} - #{$margin});
 }
 
 // common extendable css definitions

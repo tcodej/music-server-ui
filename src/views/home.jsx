@@ -154,7 +154,7 @@ export default function Browser() {
 
 	return (
 		<div id="page-home">
-			<div id="music-browser" {...swipeHandlers}>
+			<div id="music-browser" {...swipeHandlers} className={appState.playerState === 'open' ? 'is-fixed' : ''}>
 				<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
 					{ artistGroups &&
 						<Fragment>

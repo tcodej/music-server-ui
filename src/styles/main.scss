@@ -19,11 +19,11 @@ html, body {
 
 #root {
   width: 100%;
+}
 
-  &.is-fixed {
-    position: fixed;
-    overflow: hidden;
-  }
+.is-fixed {
+  position: fixed;
+  overflow: hidden;
 }
 
 .frame {
@@ -180,7 +180,7 @@ a {
 .flex {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: $box-margin;
 }
 
 button {
@@ -209,7 +209,7 @@ audio {
 }
 
 #container { 
-  margin-top: $header-height;
+  // margin-top: $header-height;
   min-width: 320px;
 }
 
