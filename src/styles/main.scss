@@ -683,20 +683,20 @@ audio {
       background-position: center;
 
       &.prev {
-        background-image: url('../assets/img/control-prev.svg');
+        background-image: url('../assets/img/control-prev-white.svg');
       }
 
       &.playpause {
-        background-image: url('../assets/img/control-play.svg');
+        background-image: url('../assets/img/control-play-white.svg');
         background-size: 50px;
 
         &.is-playing {
-          background-image: url('../assets/img/control-pause.svg');
+          background-image: url('../assets/img/control-pause-white.svg');
         }
       }
 
       &.next {
-        background-image: url('../assets/img/control-next.svg');
+        background-image: url('../assets/img/control-next-white.svg');
       }
     }
   }
