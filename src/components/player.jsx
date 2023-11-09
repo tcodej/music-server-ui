@@ -9,7 +9,6 @@ import mp3Icon from '../assets/img/icon-mp3.svg';
 
 export default function Player({ playlist, loadList }) {
 	const { appState, updateAppState } = useAppContext();
-	const [ listenersAdded, setListenersAdded ] = useState(false);
 	const [ song, setSong ] = useState(false);
 	const [ state, setState ] = useState({
 		playing: false,
@@ -229,6 +228,7 @@ export default function Player({ playlist, loadList }) {
 
 	useEffect(() => {
 		playAudio(playlist.index);
+		// eslint-disable-next-line
 	}, [playlist]);
 
 	useEffect(() => {

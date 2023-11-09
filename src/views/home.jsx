@@ -195,7 +195,7 @@ export default function Browser() {
 
 					{ (list && !list.files.length && !list.folders.length) &&
 						<Fragment>
-							<h4>This folder doesn't contain any valid music files.</h4>
+							<h4>This folder doesn&apos;t contain any valid music files.</h4>
 							{ (list.unsupported.length > 0) &&
 								<Fragment>
 									<p>(But there are unsupported files)</p>

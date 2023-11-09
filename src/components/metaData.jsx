@@ -1,16 +1,13 @@
 import { Fragment, useEffect, useState } from 'react';
-import { useAppContext } from '../contexts/application';
 import Cover from './cover';
 
 export default function MetaData({ data }) {
-	const { updateAppState } = useAppContext();
 	const [ meta, setMeta ] = useState();
 
 	useEffect(() => {
 		if (data) {
 			setMeta(data);
 		}
-	// eslint-disable-next-line
 	}, [data]);
 
 	return (
