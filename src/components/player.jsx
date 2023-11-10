@@ -255,27 +255,11 @@ export default function Player({ playlist, loadList }) {
 				};
 
 				navigator.mediaSession.metadata = new MediaMetadata(metaData);
-
-				navigator.mediaSession.setActionHandler('play', () => {
-					play();
-				});
- 
-				navigator.mediaSession.setActionHandler('pause', () => {
-					stop();
-				});
- 
-				navigator.mediaSession.setActionHandler('stop', () => {
-					stop();
-				});
- 
-				navigator.mediaSession.setActionHandler('previoustrack', () => {
-					prevTrack();
-				});
-
-				navigator.mediaSession.setActionHandler('nexttrack', () => {
-					nextTrack();
-				});
-
+				navigator.mediaSession.setActionHandler('play', play);
+ 				navigator.mediaSession.setActionHandler('pause', stop);
+ 				navigator.mediaSession.setActionHandler('stop', stop);
+ 				navigator.mediaSession.setActionHandler('previoustrack', prevTrack);
+				navigator.mediaSession.setActionHandler('nexttrack', nextTrack);
 				navigator.mediaSession.setActionHandler('seekto', (e) => {
 					seek(e.seekTime);
 				});

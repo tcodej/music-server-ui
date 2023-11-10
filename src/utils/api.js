@@ -66,3 +66,7 @@ export const getFolderMeta = async (path) => {
 	path = encodeURIComponent(path);
 	return getResult(`/api/meta/folder/${path}`);
 }
+
+export const getRandom = async (num) => {
+	return getResult(`/api/random/${num}`);
+}

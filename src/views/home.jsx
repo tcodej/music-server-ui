@@ -3,12 +3,13 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 
-import { browse } from '../utils/api';
+import { browse, getRandom } from '../utils/api';
 import { alphaGroup } from '../utils';
 import Track from '../components/track';
 import MetaData from '../components/metaData';
 import Breadcrumbs from '../components/breadcrumbs';
 import AlbumFolder from '../components/albumFolder';
+import Album from '../components/album';
 import Player from '../components/player';
 import ErrorMessage from '../components/errorMessage';
 
@@ -19,6 +20,7 @@ export default function Browser() {
 	const [loaded, setLoaded] = useState(false);
 	const [artists, setArtists] = useState();
 	const [artistGroups, setArtistGroups] = useState();
+	const [randomAlbums, setRandomAlbums] = useState();
 	const [list, setList] = useState();
 	const [meta, setMeta] = useState();
 	const [playlist, setPlaylist] = useState(false);
@@ -53,6 +55,7 @@ export default function Browser() {
 	const reset = () => {
 		setMeta();
 		setList();
+		setRandomAlbums();
 		updateAppState({ currentArtist: '', error: false });
 	}
 
@@ -103,6 +106,13 @@ export default function Browser() {
 
 	const sideToggle = (bool) => {
 		appAction.toggleMenu(bool);
+	}
+
+	const rando = () => {
+		getRandom(10).then((response) => {
+			console.log(response);
+			setRandomAlbums(response.result);
+		});
 	}
 
 	const loadPlaylist = (index) => {
@@ -224,7 +234,19 @@ export default function Browser() {
 							})}
 						</ul>
 					}
+
+					{ (randomAlbums && randomAlbums.length > 0) &&
+						<div className="album-list">
+							{ randomAlbums.map((item, index) => {
+								return <Album key={item+index} item={item} onClick={() => { loadList(item.artist +'/'+ item.path) }} />
+							})}
+						</div>
+					}
+
+					<button type="button" onClick={rando}>Rando</button>
+
 				</div>
+
 
 				{ playlist &&
 					<Player playlist={playlist} loadList={loadList} />
