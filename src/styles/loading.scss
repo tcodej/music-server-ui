@@ -4,10 +4,11 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: $d-gray;
+  background-color: $black50;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 20;
 }
 
 .loading {

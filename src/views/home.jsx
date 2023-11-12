@@ -5,6 +5,7 @@ import { useSwipeable } from 'react-swipeable';
 
 import { browse, getRandom } from '../utils/api';
 import { alphaGroup } from '../utils';
+import Loading from '../components/loading';
 import Track from '../components/track';
 import MetaData from '../components/metaData';
 import Breadcrumbs from '../components/breadcrumbs';
@@ -27,7 +28,7 @@ export default function Browser() {
 	const [filter, setFilter] = useState('');
 
 	useEffect(() => {
-		if (!loaded) {
+		if (!artists) {
 			browse().then((response) => {
 				if (response && response.ok) {
 					setLoaded(true);
@@ -47,12 +48,14 @@ export default function Browser() {
 
 		} else {
 			reset();
+			setLoaded(true);
 			sideToggle(true);
 		}
 	// eslint-disable-next-line
-	}, [loaded, params]);
+	}, [params]);
 
 	const reset = () => {
+		setLoaded(false);
 		setMeta();
 		setList();
 		setRandomAlbums();
@@ -69,6 +72,7 @@ export default function Browser() {
 
 		browse(path).then((response) => {
 			if (response && response.ok) {
+				setLoaded(true);
 				setList(response);
 				updateAppState({
 					playerState: 'min',
@@ -82,7 +86,9 @@ export default function Browser() {
 	}
 
 	const loadList = (path) => {
+		setLoaded(false);
 		browse(path).then((response) => {
+			setLoaded(true);
 			appAction.toggleMenu(false);
 
 			if (response.ok) {
@@ -104,14 +110,16 @@ export default function Browser() {
 		});
 	}
 
-	const sideToggle = (bool) => {
-		appAction.toggleMenu(bool);
-	}
-
-	const rando = () => {
+	const loadRandom = () => {
+		reset();
 		getRandom(10).then((response) => {
+			setLoaded(true);
 			setRandomAlbums(response.result);
 		});
+	}
+
+	const sideToggle = (bool) => {
+		appAction.toggleMenu(bool);
 	}
 
 	const loadPlaylist = (index) => {
@@ -189,11 +197,18 @@ export default function Browser() {
 									})
 								}
 							</div>
+							<div id="buttons">
+								<button type="button" className="btn-random" onClick={loadRandom}>Random Albums</button>
+							</div>
 						</Fragment>
 					}
 				</div>
 
 				<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
+					{ !loaded &&
+						<Loading />
+					}
+
 					{ (list && list.path) &&
 						<Breadcrumbs path={list.path} loadList={loadList} />
 					}
@@ -242,18 +257,14 @@ export default function Browser() {
 						</ul>
 					}
 
-					{ (randomAlbums && randomAlbums.length > 0) &&
+					{ (!list && randomAlbums && randomAlbums.length > 0) &&
 						<div className="album-list">
 							{ randomAlbums.map((item, index) => {
 								return <Album key={item+index} item={item} showArtist onClick={() => { loadList(item.path) }} />
 							})}
 						</div>
 					}
-
-					<button type="button" onClick={rando}>Rando</button>
-
 				</div>
-
 
 				{ playlist &&
 					<Player playlist={playlist} loadList={loadList} />
