@@ -11,7 +11,7 @@ export default function AlbumFolder({ item, parent, onClick }) {
 
 	useEffect(() => {
 		if (!meta) {
-			getFolderMeta(parent +'/'+ item).then((response) => {
+			getFolderMeta([parent, item].join('/')).then((response) => {
 				setMeta(response);
 			});
 		}

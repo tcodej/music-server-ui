@@ -110,7 +110,6 @@ export default function Browser() {
 
 	const rando = () => {
 		getRandom(10).then((response) => {
-			console.log(response);
 			setRandomAlbums(response.result);
 		});
 	}
@@ -219,10 +218,18 @@ export default function Browser() {
 						</Fragment>
 					}
 
-					{ (list && list.folders.length > 0) &&
+{/*					{ (list && list.folders.length > 0) &&
 						<div className="album-list">
 							{ list.folders.map((item, index) => {
 								return <AlbumFolder key={item+index} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
+							})}
+						</div>
+					}
+*/}
+					{ (list && list.albums.length > 0) &&
+						<div className="album-list">
+							{ list.albums.map((item, index) => {
+								return <Album key={item+index} item={item} onClick={() => { loadList(item.path) }} />
 							})}
 						</div>
 					}
@@ -238,7 +245,7 @@ export default function Browser() {
 					{ (randomAlbums && randomAlbums.length > 0) &&
 						<div className="album-list">
 							{ randomAlbums.map((item, index) => {
-								return <Album key={item+index} item={item} onClick={() => { loadList(item.artist +'/'+ item.path) }} />
+								return <Album key={item+index} item={item} showArtist onClick={() => { loadList(item.path) }} />
 							})}
 						</div>
 					}

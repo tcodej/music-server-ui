@@ -540,6 +540,10 @@ audio {
     margin-top: 10px;
   }
 
+  .artist {
+    color: $blue;
+  }
+
   @media screen and (max-width: $bp-mobile-sm) {
     @include boxWidth(50);
   }
