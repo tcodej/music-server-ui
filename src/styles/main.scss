@@ -464,7 +464,11 @@ audio {
     cursor: pointer;
   }
 
-  .btn-random {
+  .btn-random-albums {
+    background-image: url('../assets/img/icon-random.svg');
+  }
+
+  .btn-random-songs {
     background-image: url('../assets/img/icon-random.svg');
   }
 }

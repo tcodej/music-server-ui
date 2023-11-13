@@ -67,6 +67,10 @@ export const getFolderMeta = async (path) => {
 	return getResult(`/api/meta/folder/${path}`);
 }
 
-export const getRandom = async (num) => {
-	return getResult(`/api/random/${num}`);
+export const getRandomAlbums = async (num) => {
+	return getResult(`/api/random/albums/${num}`);
+}
+
+export const getRandomSongs = async (num) => {
+	return getResult(`/api/random/songs/${num}`);
 }

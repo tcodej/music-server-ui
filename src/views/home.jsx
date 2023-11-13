@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 
-import { browse, getRandom } from '../utils/api';
+import { browse, getRandomAlbums, getRandomSongs } from '../utils/api';
 import { alphaGroup } from '../utils';
 import Loading from '../components/loading';
 import Track from '../components/track';
@@ -110,11 +110,19 @@ export default function Browser() {
 		});
 	}
 
-	const loadRandom = () => {
+	const loadRandomAlbums = () => {
 		reset();
-		getRandom(10).then((response) => {
+		getRandomAlbums(10).then((response) => {
 			setLoaded(true);
 			setRandomAlbums(response.result);
+		});
+	}
+
+	const loadRandomSongs = () => {
+		reset();
+		getRandomSongs(20).then((response) => {
+			setLoaded(true);
+			setList(response);
 		});
 	}
 
@@ -198,7 +206,8 @@ export default function Browser() {
 								}
 							</div>
 							<div id="buttons">
-								<button type="button" className="btn-random" onClick={loadRandom}>Random Albums</button>
+								<button type="button" className="btn-random-albums" onClick={loadRandomAlbums}>Random Albums</button>
+								<button type="button" className="btn-random-songs" onClick={loadRandomSongs}>Random Songs</button>
 							</div>
 						</Fragment>
 					}
