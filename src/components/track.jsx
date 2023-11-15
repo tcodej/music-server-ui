@@ -3,7 +3,6 @@ import FakeAnim from './fakeAnim';
 
 export default function Track({ num, total, item }) {
 	const { appState } = useAppContext();
-	let title = '';
 
 	// return a zero-padded track number
 	const getNum = () => {
@@ -16,6 +15,7 @@ export default function Track({ num, total, item }) {
 		// drop the track number
 		const regex = /^\d{1,4} - |^\d{1,4}. /;
 		let parts = item.split(regex);
+		let title = '';
 		let base = '';
 
 		if (parts.length > 1) {
@@ -24,14 +24,14 @@ export default function Track({ num, total, item }) {
 			title = base.substring(0, base.lastIndexOf('.'));
 
 		} else {
-			// random playlist tracks will start with /
-			if (item.substring(0, 1) === '/') {
-				parts = item.split('/');
+			// handle random tracks that conatin the full path
+			parts = item.split('/');
+			if (parts[0] === '') {
 				parts.shift();
-				const trackParts = parts.pop().split(regex);
-				base = trackParts.pop();
-				title = base.substring(0, base.lastIndexOf('.')) +' - '+ parts[0];
 			}
+			const trackParts = parts.pop().split(regex);
+			base = trackParts.pop();
+			title = base.substring(0, base.lastIndexOf('.')) +' - '+ parts[0];
 		}
 
 		return title;
