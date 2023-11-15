@@ -34,6 +34,15 @@
 			animation-duration: 0.2s;
 		}
 	}
+
+	&.freeze {
+		animation-name: none;
+
+		div {
+			height: 2px;
+			animation-duration: 0s;
+		}
+	}
 }
 
 @keyframes eq-animation {

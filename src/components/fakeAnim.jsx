@@ -1,8 +1,8 @@
 import '../styles/fakeanim.scss';
 
-export default function FakeAnim() {
+export default function FakeAnim({ freeze }) {
 	return (
-		<div className="fakeanim">
+		<div className={'fakeanim'+ (freeze ? ' freeze' : '')}>
 			<div />
 			<div />
 			<div />

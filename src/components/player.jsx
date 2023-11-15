@@ -7,15 +7,16 @@ import Slider from './slider';
 import Cover from './cover';
 import mp3Icon from '../assets/img/icon-mp3.svg';
 
+let seeking = false;
+
 export default function Player({ playlist, loadList }) {
 	const { appState, updateAppState } = useAppContext();
 	const [ song, setSong ] = useState(false);
 	const [ state, setState ] = useState({
-		playing: false,
 		duration: 0,
 		currentTime: 0,
 		remainingTime: 0,
-		volume: 0.05
+		volume: 1
 	});
 
 	const player = useRef(null);
@@ -62,16 +63,16 @@ export default function Player({ playlist, loadList }) {
 
 	const play = () => {
 		player.current.play();
-		updateState({ playing: true });
+		updateAppState({ playing: true });
 	}
 
 	const stop = () => {
 		player.current.pause();
-		updateState({ playing: false });
+		updateAppState({ playing: false });
 	}
 
 	const togglePlay = () => {
-		if (state.playing) {
+		if (appState.playing) {
 			stop();
 
 		} else {
@@ -80,13 +81,14 @@ export default function Player({ playlist, loadList }) {
 	}
 
 	const handlePlay = () => {
-		// temporary
-		player.current.volume = state.volume;
+		const vol = localStorage.getItem('musicbin_volume');
+		console.log(vol);
+		setVolume(vol || 1);
 	}
 
 	const handleCanPlay = () => {
 		// because autoplay is enabled
-		updateState({ playing: true });
+		updateAppState({ playing: true });
 	}
 
 	const handleDurationChange = () => {
@@ -98,7 +100,7 @@ export default function Player({ playlist, loadList }) {
 	}
 
 	const handleTimeUpdate = () => {
-		if (!player.current) {
+		if (!player.current || seeking) {
 			return;
 		}
 
@@ -109,8 +111,24 @@ export default function Player({ playlist, loadList }) {
 		updateProgress();
 	}
 
+	// when dragging the progress slider
+	const updateSlider = (value) => {
+		seeking = true;
+		if (Array.isArray(value)) {
+			value = value[0];
+		}
+
+		const remainingTime = getDuration() - value;
+
+		updateState({
+			progress: value,
+			currentTime: formatTime(value),
+			remainingTime: `-${formatTime(remainingTime)}`
+		});
+	}
+
 	const updateProgress = (value) => {
-		if (player.current.seeking) {
+		if (seeking) {
 			return;
 		}
 
@@ -147,6 +165,7 @@ export default function Player({ playlist, loadList }) {
 			value = value[0];
 		}
 
+		localStorage.setItem('musicbin_volume', value);
 		player.current.volume = value;
 		updateState({ volume: player.current.volume });
 	}
@@ -189,7 +208,12 @@ export default function Player({ playlist, loadList }) {
 		getMeta(path).then((response) => {
 			if (response.ok) {
 				setSong(response);
-				updateAppState({ currentTrack: path });
+				updateAppState({
+					currentTrack: {
+						path: path,
+						meta: response
+					}
+				});
 
 			} else {
 				updateAppState({ error: 'Sorry, there has been an error. Failed to load audio.'});
@@ -198,11 +222,13 @@ export default function Player({ playlist, loadList }) {
 	}
 
 	const seek = (value) => {
+		seeking = false;
+
 		if (Array.isArray(value)) {
 			value = value[0];
 		}
 
-		if (state.playing) {
+		if (appState.playing) {
 			player.current.currentTime = value;
 		}
 	}
@@ -215,8 +241,18 @@ export default function Player({ playlist, loadList }) {
 		}
 
 		if (typeof loadList === 'function') {
-			loadList(playlist.path);
 			updateAppState({ playerState: 'min' });
+
+			// playlist.path is present for normal plays
+			if (playlist.path) {
+				loadList(playlist.path);
+
+			} else {
+				// random playlist songs contain the path
+				const track = playlist.songs[playlist.index];
+				const path = track.substring(0, track.lastIndexOf('/'));
+				loadList(path);
+			}
 		}
 	}
 
@@ -298,7 +334,7 @@ export default function Player({ playlist, loadList }) {
 								max={state.duration}
 								step={0.001}
 								value={[state.progress]}
-								onValueChange={updateProgress}
+								onValueChange={updateSlider}
 								onValueCommit={seek}
 							/>
 							<div className="minutes">
@@ -309,7 +345,7 @@ export default function Player({ playlist, loadList }) {
 						</div>
 						<div className="controls">
 							<button type="button" className="prev" onClick={prevTrack}>Prev</button>
-							<button type="button" className={ 'playpause'+ (state.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
+							<button type="button" className={ 'playpause'+ (appState.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
 							<button type="button" className="next" onClick={nextTrack}>Next</button>
 						</div>
 						{ volumeAllowed() &&

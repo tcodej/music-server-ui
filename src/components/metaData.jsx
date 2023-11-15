@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useState } from 'react';
+import { useAppContext } from '../contexts/application';
 import Cover from './cover';
 
 export default function MetaData({ data }) {
+	const { appState } = useAppContext();
 	const [ meta, setMeta ] = useState();
 
 	useEffect(() => {
@@ -9,6 +11,12 @@ export default function MetaData({ data }) {
 			setMeta(data);
 		}
 	}, [data]);
+
+	// useEffect(() => {
+	// 	if (appState.currentTrack) {
+	// 		setMeta(appState.currentTrack.meta);
+	// 	}
+	// }, [appState.currentTrack]);
 
 	return (
 		<Fragment>

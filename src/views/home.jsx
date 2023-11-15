@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 
-import { browse, getRandomAlbums, getRandomSongs } from '../utils/api';
+import { browse, getRandomAlbums, getRandomTracks } from '../utils/api';
 import { alphaGroup } from '../utils';
 import Loading from '../components/loading';
 import Track from '../components/track';
@@ -14,14 +14,13 @@ import Album from '../components/album';
 import Player from '../components/player';
 import ErrorMessage from '../components/errorMessage';
 
-export default function Browser() {
+export default function Home() {
 	const params = useParams();
 	const { appState, appAction, updateAppState } = useAppContext();
 
 	const [loaded, setLoaded] = useState(false);
 	const [artists, setArtists] = useState();
 	const [artistGroups, setArtistGroups] = useState();
-	const [randomAlbums, setRandomAlbums] = useState();
 	const [list, setList] = useState();
 	const [meta, setMeta] = useState();
 	const [playlist, setPlaylist] = useState(false);
@@ -58,17 +57,12 @@ export default function Browser() {
 		setLoaded(false);
 		setMeta();
 		setList();
-		setRandomAlbums();
 		updateAppState({ currentArtist: '', error: false });
 	}
 
 	const loadArtist = (path) => {
 		reset();
-
-		// below desktop breakpoint, close sidebar after choosing artist
-		if (window.innerWidth < 700) {
-			appAction.toggleMenu(false);
-		}
+		checkSideBar();
 
 		browse(path).then((response) => {
 			if (response && response.ok) {
@@ -80,13 +74,20 @@ export default function Browser() {
 				});
 
 			} else {
-				updateAppState({ error: 'Sorry, there has been an error. Failed to load '+ path +'.'});
+				updateAppState({ error: 'Sorry, there has been an error. Failed to load '+ path +'.' });
 			}
 		});
 	}
 
+	const checkSideBar = () => {
+		// below desktop breakpoint, close sidebar
+		if (window.innerWidth < 700) {
+			appAction.toggleMenu(false);
+		}
+	}
+
 	const loadList = (path) => {
-		setLoaded(false);
+		reset();
 		browse(path).then((response) => {
 			setLoaded(true);
 			appAction.toggleMenu(false);
@@ -113,14 +114,24 @@ export default function Browser() {
 	const loadRandomAlbums = () => {
 		reset();
 		getRandomAlbums(10).then((response) => {
+			checkSideBar();
+			updateAppState({ playerState: 'min' });
 			setLoaded(true);
-			setRandomAlbums(response.result);
+			setList({
+				type: 'random',
+				path: 'Random Albums',
+				albums: response.result,
+				folders: [],
+				files: []
+			});
 		});
 	}
 
-	const loadRandomSongs = () => {
+	const loadRandomTracks = () => {
 		reset();
-		getRandomSongs(20).then((response) => {
+		getRandomTracks(20).then((response) => {
+			checkSideBar();
+			updateAppState({ playerState: 'min' });
 			setLoaded(true);
 			setList(response);
 		});
@@ -207,7 +218,7 @@ export default function Browser() {
 							</div>
 							<div id="buttons">
 								<button type="button" className="btn-random-albums" onClick={loadRandomAlbums}>Random Albums</button>
-								<button type="button" className="btn-random-songs" onClick={loadRandomSongs}>Random Songs</button>
+								<button type="button" className="btn-random-tracks" onClick={loadRandomTracks}>Random Tracks</button>
 							</div>
 						</Fragment>
 					}
@@ -226,7 +237,7 @@ export default function Browser() {
 						<MetaData data={meta} />
 					}
 
-					{ (list && !list.files.length && !list.folders.length) &&
+					{ (list && !list.files.length && !list.folders.length && !list.albums.length) &&
 						<Fragment>
 							<h4>This folder doesn&apos;t contain any valid music files.</h4>
 							{ (list.unsupported.length > 0) &&
@@ -253,7 +264,7 @@ export default function Browser() {
 					{ (list && list.albums.length > 0) &&
 						<div className="album-list">
 							{ list.albums.map((item, index) => {
-								return <Album key={item+index} item={item} onClick={() => { loadList(item.path) }} />
+								return <Album key={item+index} item={item} showArtist={list.type === 'random' ? true : false} onClick={() => { loadList(item.path) }} />
 							})}
 						</div>
 					}
@@ -264,14 +275,6 @@ export default function Browser() {
 								return <li key={item+index} onClick={() => { loadPlaylist(index) }}><Track num={index+1} total={list.files.length} item={item} /></li>
 							})}
 						</ul>
-					}
-
-					{ (!list && randomAlbums && randomAlbums.length > 0) &&
-						<div className="album-list">
-							{ randomAlbums.map((item, index) => {
-								return <Album key={item+index} item={item} showArtist onClick={() => { loadList(item.path) }} />
-							})}
-						</div>
 					}
 				</div>
 

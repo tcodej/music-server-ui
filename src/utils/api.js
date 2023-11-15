@@ -71,6 +71,6 @@ export const getRandomAlbums = async (num) => {
 	return getResult(`/api/random/albums/${num}`);
 }
 
-export const getRandomSongs = async (num) => {
-	return getResult(`/api/random/songs/${num}`);
+export const getRandomTracks = async (num) => {
+	return getResult(`/api/random/tracks/${num}`);
 }

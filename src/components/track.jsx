@@ -3,6 +3,7 @@ import FakeAnim from './fakeAnim';
 
 export default function Track({ num, total, item }) {
 	const { appState } = useAppContext();
+	let title = '';
 
 	// return a zero-padded track number
 	const getNum = () => {
@@ -13,21 +14,32 @@ export default function Track({ num, total, item }) {
 	// 03 - The Song Name.mp3 (preferred) or 03. The Song Name.mp3
 	const getTitle = () => {
 		// drop the track number
-		let parts = item.split(/^\d{1,4} - |\d{1,4}. /);
+		const regex = /^\d{1,4} - |^\d{1,4}. /;
+		let parts = item.split(regex);
+		let base = '';
 
 		if (parts.length > 1) {
 			parts.shift();
-		}
+			base = parts.join('');
+			title = base.substring(0, base.lastIndexOf('.'));
 
-		let base = parts.join('');
-		let title = base.substring(0, base.lastIndexOf('.'));
+		} else {
+			// random playlist tracks will start with /
+			if (item.substring(0, 1) === '/') {
+				parts = item.split('/');
+				parts.shift();
+				const trackParts = parts.pop().split(regex);
+				base = trackParts.pop();
+				title = base.substring(0, base.lastIndexOf('.')) +' - '+ parts[0];
+			}
+		}
 
 		return title;
 	}
 
 	const isCurrent = () => {
 		// could return a false positive if another track exists with the exact same number+name
-		if (appState.currentTrack.indexOf(item) > -1) {
+		if (appState.currentTrack && appState.currentTrack.path.indexOf(item) > -1) {
 			return ' is-current';
 		}
 
@@ -36,7 +48,7 @@ export default function Track({ num, total, item }) {
 
 	const getAnim = () => {
 		if (isCurrent()) {
-			return <FakeAnim />
+			return <FakeAnim freeze={appState.playing ? false : true} />
 		}
 	}
 

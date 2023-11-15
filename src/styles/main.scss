@@ -109,6 +109,10 @@ header {
     color: $l-gray;
     font-size: 18px;
     padding-right: 15px;
+
+    span {
+      color: $blue;
+    }
   }
 
   a {
@@ -468,7 +472,7 @@ audio {
     background-image: url('../assets/img/icon-random.svg');
   }
 
-  .btn-random-songs {
+  .btn-random-tracks {
     background-image: url('../assets/img/icon-random.svg');
   }
 }
