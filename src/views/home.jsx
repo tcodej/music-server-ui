@@ -9,7 +9,6 @@ import Loading from '../components/loading';
 import Track from '../components/track';
 import MetaData from '../components/metaData';
 import Breadcrumbs from '../components/breadcrumbs';
-import AlbumFolder from '../components/albumFolder';
 import Album from '../components/album';
 import Player from '../components/player';
 import ErrorMessage from '../components/errorMessage';
@@ -237,6 +236,10 @@ export default function Home() {
 						<MetaData data={meta} />
 					}
 
+					{ (loaded && !list) &&
+						<div className="logo home">MusicBin</div>
+					}
+
 					{ (list && !list.files.length && !list.folders.length && !list.albums.length) &&
 						<Fragment>
 							<h4>This folder doesn&apos;t contain any valid music files.</h4>
@@ -253,14 +256,6 @@ export default function Home() {
 						</Fragment>
 					}
 
-{/*					{ (list && list.folders.length > 0) &&
-						<div className="album-list">
-							{ list.folders.map((item, index) => {
-								return <AlbumFolder key={item+index} item={item} parent={list.path} onClick={() => { loadList(list.path +'/'+ item) }} />
-							})}
-						</div>
-					}
-*/}
 					{ (list && list.albums.length > 0) &&
 						<div className="album-list">
 							{ list.albums.map((item, index) => {

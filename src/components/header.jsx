@@ -16,7 +16,7 @@ export default function Header() {
 				<span></span>
 				<span></span>
 			</div>
-			<h1><Link to="/">Music<span>Bin</span></Link></h1>
+			<h1 className="logo"><Link to="/">Music<span>Bin</span></Link></h1>
 		</header>
 	);
 }

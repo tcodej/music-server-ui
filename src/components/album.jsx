@@ -3,10 +3,11 @@ import Cover from './cover';
 
 export default function Album({ item, onClick, showArtist }) {
 
-	if (item.isFolder) {
-		// check for folder format YYYY - Album Title
-		const [full, first, second] = item.path.split(/(^[12]\d{3}) - /);
+	// check for folder format YYYY - Album Title
+	const folder = item.path.split('/').pop();
+	const [full, first, second] = folder.split(/(^[12]\d{3}) - /);
 
+	if (item.isFolder) {
 		if (full) {
 			item.album = full;
 		}
@@ -17,6 +18,13 @@ export default function Album({ item, onClick, showArtist }) {
 
 		if (second) {
 			item.album = second;
+		}
+	}
+
+	// prefer folder year if it doesn't match 1st mp3 meta year
+	if (first) {
+		if (item.year !== first) {
+			item.year = first;
 		}
 	}
 

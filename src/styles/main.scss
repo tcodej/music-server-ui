@@ -108,7 +108,6 @@ header {
   h1 {
     color: $l-gray;
     font-size: 18px;
-    padding-right: 15px;
 
     span {
       color: $blue;
@@ -206,6 +205,25 @@ p, pre, code {
 
 strong {
   font-weight: $reg;
+}
+
+.logo {
+  padding: 0 15px 0 35px;
+  background-position: left center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../assets/img/logo.png');
+
+  &.home {
+    @extend .no-text;
+    @extend .center;
+    padding: 0;
+    background-position: center;
+    background-size: contain;
+    width: 100%;
+    max-width: 250px;
+    min-height: 250px;
+  }
 }
 
 audio {

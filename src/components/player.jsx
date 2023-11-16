@@ -82,7 +82,6 @@ export default function Player({ playlist, loadList }) {
 
 	const handlePlay = () => {
 		const vol = localStorage.getItem('musicbin_volume');
-		console.log(vol);
 		setVolume(vol || 1);
 	}
 
