@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { useAppContext } from '../contexts/application';
 import FakeAnim from './fakeAnim';
 
@@ -11,11 +12,12 @@ export default function Track({ num, total, item }) {
 
 	// return song title without track number based on filename i.e.
 	// 03 - The Song Name.mp3 (preferred) or 03. The Song Name.mp3
-	const getTitle = () => {
+	const getTrack = () => {
 		// drop the track number
 		const regex = /^\d{1,4} - |^\d{1,4}. /;
 		let parts = item.split(regex);
 		let title = '';
+		let artist = '';
 		let base = '';
 
 		if (parts.length > 1) {
@@ -31,10 +33,19 @@ export default function Track({ num, total, item }) {
 			}
 			const trackParts = parts.pop().split(regex);
 			base = trackParts.pop();
-			title = base.substring(0, base.lastIndexOf('.')) +' - '+ parts[0];
+			title = base.substring(0, base.lastIndexOf('.'));
+
+			if (parts[0]) {
+				artist = parts[0];
+			}
 		}
 
-		return title;
+		if (artist) {
+			return <Fragment>{title}<span className="artist"> - {artist}</span></Fragment>
+
+		} else {
+			return <Fragment>{title}</Fragment>
+		}
 	}
 
 	const isCurrent = () => {
@@ -53,6 +64,10 @@ export default function Track({ num, total, item }) {
 	}
 
 	return (
-		<div className={`track${isCurrent()}`}><span className="num">{getNum()}.</span> {getTitle()}{getAnim()}</div>
+		<div className={`track${isCurrent()}`}>
+			<span>{getNum()}.</span>
+			{getTrack()}
+			{getAnim()}
+		</div>
 	);
 }

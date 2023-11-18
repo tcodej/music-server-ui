@@ -502,6 +502,8 @@ audio {
 }
 
 .track {
+  display: flex;
+  gap: 10px;
   position: relative;
   font-family: $font-mono;
   font-size: 18px;
@@ -517,9 +519,17 @@ audio {
   overflow: hidden;
   text-overflow: ellipsis;
 
+  .artist {
+    color: $blue;
+  }
+
   &.is-current {
     background-color: $blue;
     padding-right: 26px;
+
+    .artist {
+      color: $white;
+    }
   }
 }
 

@@ -1,3 +1,3 @@
-# Music Server UI
+# MusicBin UI
 
-A basic music browser and player. Works in tandem with the [music-server](https://github.com/tcodej/music-server) api.
+A basic music browser and player. Works in tandem with the [musicbin-server](https://github.com/tcodej/musicbin-server) api.
