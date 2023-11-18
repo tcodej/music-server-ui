@@ -1,7 +1,8 @@
 {
-  "name": "music-server-ui",
+  "name": "musicbin-ui",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A front end GUI for browsing and playing music files served from the MusicBin server.",
   "type": "module",
   "scripts": {
     "dev": "vite",
