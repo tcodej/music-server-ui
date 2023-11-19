@@ -732,35 +732,43 @@ audio {
     }
   }
 
-  .controls {
+  .controls, .buttons {
     display: flex;
     width: 100%;
     justify-content: space-around;
+  }
 
-    button {
-      @extend .no-text;
-      width: 60px;
-      height: 60px;
-      background-repeat: no-repeat;
-      background-size: 30px;
-      background-position: center;
+  button {
+    @extend .no-text;
+    width: 60px;
+    height: 60px;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
 
-      &.prev {
-        background-image: url('../assets/img/control-prev-white.svg');
+    &.playlist {
+      background-image: url('../assets/img/icon-playlist.svg');
+    }
+
+    &.minimize {
+      background-image: url('../assets/img/icon-minimize.svg');
+    }
+
+    &.prev {
+      background-image: url('../assets/img/control-prev-white.svg');
+    }
+
+    &.playpause {
+      background-image: url('../assets/img/control-play-white.svg');
+      background-size: 50px;
+
+      &.is-playing {
+        background-image: url('../assets/img/control-pause-white.svg');
       }
+    }
 
-      &.playpause {
-        background-image: url('../assets/img/control-play-white.svg');
-        background-size: 50px;
-
-        &.is-playing {
-          background-image: url('../assets/img/control-pause-white.svg');
-        }
-      }
-
-      &.next {
-        background-image: url('../assets/img/control-next-white.svg');
-      }
+    &.next {
+      background-image: url('../assets/img/control-next-white.svg');
     }
   }
 
@@ -819,13 +827,14 @@ audio {
 
     .controls {
       width: 120px;
-
-      .playpause {
-        background-size: 30px;
-      }
     }
 
-    .artist, .prev, .volume, .time, .background-container {
+    .playpause {
+      background-size: 30px;
+    }
+
+    .artist, .prev, .volume, .time,
+    .buttons, .background-container {
       display: none;
     }
   }

@@ -113,6 +113,7 @@ export default function Player({ playlist, loadList }) {
 	// when dragging the progress slider
 	const updateSlider = (value) => {
 		seeking = true;
+
 		if (Array.isArray(value)) {
 			value = value[0];
 		}
@@ -361,6 +362,10 @@ export default function Player({ playlist, loadList }) {
 								<div className="icon max">Max</div>
 							</div>
 						}
+						<div className="buttons">
+							<button type="button" className="minimize" onClick={() => { updateAppState({ playerState: 'min' }) }}>Minimize</button>
+							<button type="button" className="playlist" onClick={loadAlbum}>Playlist</button>
+						</div>
 					</div>
 					<div className="background-container">
 						<div className="background" style={{ backgroundImage: `url('${song.image}')` }} />
