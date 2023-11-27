@@ -16,7 +16,8 @@ export default function Player({ playlist, loadList }) {
 		duration: 0,
 		currentTime: 0,
 		remainingTime: 0,
-		volume: 1
+		volume: 1,
+		percent: 0
 	});
 
 	const player = useRef(null);
@@ -145,9 +146,16 @@ export default function Player({ playlist, loadList }) {
 
 		const remainingTime = getDuration() - progress;
 
+		// single line progress bar
+		let percent = (progress / getDuration()) * 100;
+		if (isNaN(percent)) {
+			percent = 0;
+		}
+
 		updateState({
 			progress: progress,
-			remainingTime: `-${formatTime(remainingTime)}`
+			remainingTime: `-${formatTime(remainingTime)}`,
+			percent: percent
 		});
 	}
 
@@ -322,6 +330,7 @@ export default function Player({ playlist, loadList }) {
 		>
 			{ song &&
 				<Fragment>
+					<div id="progress-bar"><div className="progress" style={{ width: `${state.percent}%` }} /></div>
 					<Cover meta={song} onClick={loadAlbum} />
 					<div className="player-info">
 						<div className="song-info" onClick={maximize}>

@@ -840,6 +840,18 @@ audio {
   }
 }
 
+#progress-bar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+
+  .progress {
+    background-color: $blue;
+    height: 1px;
+  }
+}
+
 #error-message {
   @extend .center;
   color: $white;
