@@ -7,6 +7,11 @@ export default function Passcode({ onUnlock }) {
 	const numbers = ['1','2','3','4','5','6','7','8','9','0'];
 
 	useEffect(() => {
+		if (code == 'xxxx') {
+			unlock();
+			return;
+		}
+
 		if (window) {
 			window.addEventListener('keyup', handleKeyUp);
 		}
