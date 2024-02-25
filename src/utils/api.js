@@ -45,7 +45,7 @@ export const browse = async (path, opts) => {
 		}
 	}
 
-	return getResult(`/api/browse/${path}`);
+	return getResult(`/browse/${path}`);
 };
 
 export const getMeta = async (path) => {
@@ -54,7 +54,7 @@ export const getMeta = async (path) => {
 	}
 
 	path = encodeURIComponent(path);
-	return getResult(`/api/meta/${path}`);
+	return getResult(`/meta/${path}`);
 }
 
 // return meta for first mp3 in an album folder
@@ -64,13 +64,13 @@ export const getFolderMeta = async (path) => {
 	}
 
 	path = encodeURIComponent(path);
-	return getResult(`/api/meta/folder/${path}`);
+	return getResult(`/meta/folder/${path}`);
 }
 
 export const getRandomAlbums = async (num) => {
-	return getResult(`/api/random/albums/${num}`);
+	return getResult(`/random/albums/${num}`);
 }
 
 export const getRandomTracks = async (num) => {
-	return getResult(`/api/random/tracks/${num}`);
+	return getResult(`/random/tracks/${num}`);
 }
