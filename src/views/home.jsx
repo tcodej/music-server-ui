@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 
-import { browse, getRandomAlbums, getRandomTracks } from '../utils/api';
+import * as api /*{ browse, getRandomAlbums, getRandomTracks, clearCache }*/ from '../utils/api';
 import { alphaGroup } from '../utils';
 import Loading from '../components/loading';
 import Track from '../components/track';
@@ -27,7 +27,7 @@ export default function Home() {
 
 	useEffect(() => {
 		if (!artists) {
-			browse().then((response) => {
+			api.browse().then((response) => {
 				if (response && response.ok) {
 					setLoaded(true);
 					setArtists(response.folders);
@@ -63,7 +63,7 @@ export default function Home() {
 		reset();
 		checkSideBar();
 
-		browse(path).then((response) => {
+		api.browse(path).then((response) => {
 			if (response && response.ok) {
 				setLoaded(true);
 				setList(response);
@@ -87,7 +87,7 @@ export default function Home() {
 
 	const loadList = (path) => {
 		reset();
-		browse(path).then((response) => {
+		api.browse(path).then((response) => {
 			setLoaded(true);
 			appAction.toggleMenu(false);
 
@@ -112,7 +112,7 @@ export default function Home() {
 
 	const loadRandomAlbums = () => {
 		reset();
-		getRandomAlbums(10).then((response) => {
+		api.getRandomAlbums(10).then((response) => {
 			checkSideBar();
 			updateAppState({ playerState: 'min' });
 			setLoaded(true);
@@ -128,7 +128,7 @@ export default function Home() {
 
 	const loadRandomTracks = () => {
 		reset();
-		getRandomTracks(20).then((response) => {
+		api.getRandomTracks(20).then((response) => {
 			checkSideBar();
 			updateAppState({ playerState: 'min' });
 			setLoaded(true);
@@ -165,6 +165,15 @@ export default function Home() {
 		setArtistGroups(alphaGroup(artists));
 		document.getElementById('field-filter').focus();
 	}
+
+	const clearCache = () => {
+		api.clearCache()
+			.then(resp => {
+				// trigger a media reload
+				console.log(resp);
+			});
+	}
+
 
 	const swipeHandlers = useSwipeable({
 		delta: 100,
@@ -216,8 +225,9 @@ export default function Home() {
 								}
 							</div>
 							<div id="buttons">
-								<button type="button" className="btn-random-albums" onClick={loadRandomAlbums}>Random Albums</button>
-								<button type="button" className="btn-random-tracks" onClick={loadRandomTracks}>Random Tracks</button>
+								<button type="button" title="Random Albums" className="btn-random-albums" onClick={loadRandomAlbums}>Random Albums</button>
+								<button type="button" title="Random Tracks" className="btn-random-tracks" onClick={loadRandomTracks}>Random Tracks</button>
+								<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
 							</div>
 						</Fragment>
 					}

@@ -74,3 +74,7 @@ export const getRandomAlbums = async (num) => {
 export const getRandomTracks = async (num) => {
 	return getResult(`/random/tracks/${num}`);
 }
+
+export const clearCache = async () => {
+	return getResult('/clearcache');
+};

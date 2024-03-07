@@ -5,17 +5,20 @@
   "description": "A front end GUI for browsing and playing music files served from the MusicBin server.",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "stmux -w always -e ERROR -m beep,system -- [ [ \"vite\" : \"cd ../library-server && npm run dev\" ] ]",
+    "dev-solo": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && node scripts/deploy.cjs"
   },
   "dependencies": {
     "@radix-ui/react-slider": "^1.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",
-    "react-swipeable": "^7.0.1"
+    "react-swipeable": "^7.0.1",
+    "stmux": "^1.8.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
@@ -25,6 +28,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "ftp-deploy": "^2.4.7",
     "sass": "^1.69.4",
     "vite": "^4.4.5",
     "vite-plugin-rewrite-all": "^1.0.1"

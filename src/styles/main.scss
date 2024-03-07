@@ -484,6 +484,12 @@ audio {
     background-size: 25px;
     background-position: center;
     cursor: pointer;
+    opacity: 0.2;
+    background-size: 20px;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   .btn-random-albums {
@@ -492,6 +498,10 @@ audio {
 
   .btn-random-tracks {
     background-image: url('../assets/img/icon-random.svg');
+  }
+
+  .btn-clear-cache {
+    background-image: url('../assets/img/icon-refresh.svg');
   }
 }
 
