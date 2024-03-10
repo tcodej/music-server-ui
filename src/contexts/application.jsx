@@ -11,6 +11,7 @@ const ApplicationProvider = ({ children }) => {
         currentArtist: '',
         // used to determine which track to highlight when playing
         currentTrack: '',
+        loaded: false,
         playing: false,
         error: false
     };

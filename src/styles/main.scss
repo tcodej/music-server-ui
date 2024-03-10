@@ -524,9 +524,9 @@ audio {
   background-size: 25px;
   background-position: 2px center;
   cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 
   .artist {
     color: $blue;
@@ -589,7 +589,7 @@ audio {
 
 .album-list {
   @extend .flex;
-  max-width: $bp-xlarge;
+  // max-width: $bp-xlarge;
   padding: 0 20px;
   // margin: 0 auto;
 }
@@ -754,6 +754,11 @@ audio {
     background-repeat: no-repeat;
     background-size: 30px;
     background-position: center;
+
+    &.preload {
+      background-image: url('../assets/img/spinner.svg');
+      cursor: default;
+    }
 
     &.playlist {
       background-image: url('../assets/img/icon-playlist.svg');

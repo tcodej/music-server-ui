@@ -142,7 +142,7 @@ export default function Home() {
 
 	const loadPlaylist = (index) => {
 		setPlaylist({ path: list.path, songs: list.files, index: index });
-		updateAppState({ playerState: 'min' });
+		updateAppState({ playerState: 'min', loaded: false });
 	}
 
 	const doFilter = (e) => {

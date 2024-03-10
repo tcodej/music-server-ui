@@ -88,7 +88,7 @@ export default function Player({ playlist, loadList }) {
 
 	const handleCanPlay = () => {
 		// because autoplay is enabled
-		updateAppState({ playing: true });
+		updateAppState({ loaded: true, playing: true });
 	}
 
 	const handleDurationChange = () => {
@@ -183,10 +183,14 @@ export default function Player({ playlist, loadList }) {
 	}
 
 	const nextTrack = () => {
+		stop();
+		updateAppState({ loaded: false });
 		updateIndex(1);
 	}
 
 	const prevTrack = () => {
+		stop();
+		updateAppState({ loaded: false });
 		updateIndex(-1);
 	}
 
@@ -354,7 +358,11 @@ export default function Player({ playlist, loadList }) {
 						</div>
 						<div className="controls">
 							<button type="button" className="prev" onClick={prevTrack}>Prev</button>
-							<button type="button" className={ 'playpause'+ (appState.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
+							{ appState.loaded ?
+								<button type="button" className={ 'playpause'+ (appState.playing ? ' is-playing' : '') } onClick={togglePlay}>Play</button>
+							:
+								<button type="button" className="preload">Loading...</button>
+							}
 							<button type="button" className="next" onClick={nextTrack}>Next</button>
 						</div>
 						{ volumeAllowed() &&
